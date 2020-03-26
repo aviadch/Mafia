@@ -1,17 +1,23 @@
 import React from "react";
 import EnterName from "./EnterName";
+import WaitingPlayers from "./WaitingPlayers";
 
+const MOCK_playerList = ["Elisha", "Lahav", "Aviad"];
 class WaitingRoom extends React.Component {
   constructor() {
     super();
     this.state = {
-      isUserEntered: false
+      isUserEntered: false,
+      playerList: MOCK_playerList
     };
     this.onNameEnteredHandle = this.onNameEnteredHandle.bind(this);
   }
 
-  onNameEnteredHandle() {
-    this.setState({ isUserEntered: true });
+  onNameEnteredHandle(name) {
+    this.setState(prevState => ({
+        isUserEntered:true,
+        playerList: [...prevState.playerList, name]
+    }));
   }
 
   render() {
@@ -23,6 +29,8 @@ class WaitingRoom extends React.Component {
         )}
         <button>Start the game</button>
         <h2>game id</h2>
+
+        <WaitingPlayers playerList={this.state.playerList} />
       </div>
     );
   }
