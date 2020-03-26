@@ -1,3 +1,9 @@
+const ROLES = {
+  YET_DECIDED: 0,
+  MURDERER: 1,
+  DOCTOR: 2
+};
+
 class Player {
   constructor(id) {
     this.id = id;
@@ -6,10 +12,4 @@ class Player {
 
     this.activity = null;
   }
-
-  static ROLES = {
-    YET_DECIDED: 0,
-    MURDERER: 1,
-    DOCTOR: 2
-  };
 }
