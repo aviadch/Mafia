@@ -4,7 +4,7 @@ class WelcomeMenu extends React.Component {
     return (
       <div className="welcome-menu">
         <h1>Hey - Welcome to Mafia Game</h1>
-        <button>Start a New Game</button>
+        <button onClick={this.props.newGameHandler}>Start a New Game</button>
         <br/>
         <button>Join an Existing Game by ID</button>
       </div>
