@@ -1,9 +1,9 @@
 import React from 'react';
-
+import WelcomeMenu from "./WelcomeMenu"
 function App() {
   return (
     <div className="App">
-      <h1>Mafia Start</h1>
+      <WelcomeMenu/>
     </div>
   );
 }
