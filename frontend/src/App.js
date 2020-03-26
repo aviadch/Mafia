@@ -1,9 +1,9 @@
-import React from 'react';
-import WelcomeMenu from "./WelcomeMenu"
+import React from "react";
+import WelcomeMenu from "./WelcomeMenu";
 function App() {
   return (
     <div className="App">
-      <WelcomeMenu/>
+      <WelcomeMenu />
     </div>
   );
 }
