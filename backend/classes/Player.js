@@ -9,6 +9,12 @@ class Player{
         this.activity = null;
     }
 
+    static ROLES ={
+        YET_DECIDED: 0,
+        MURDERER: 1,
+        DOCTOR: 2,
+    }
+
 
 
 }
