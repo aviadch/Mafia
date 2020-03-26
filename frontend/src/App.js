@@ -1,11 +1,13 @@
 import React from "react";
 import WelcomeMenu from "./WelcomeMenu";
-function App() {
-  return (
-    <div className="App">
-      <WelcomeMenu />
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <div className="App">
+        <WelcomeMenu />
+      </div>
+    );
+  }
 }
 
 export default App;
