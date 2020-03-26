@@ -7,9 +7,12 @@ const PHASE = {
 };
 class App extends React.Component {
   constructor() {
-    this.state.phase = PHASE.START;
+    super();
+    this.state = {
+      phase: PHASE.START
+    };
   }
-  
+
   render() {
     return (
       <div className="App">
