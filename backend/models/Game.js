@@ -5,7 +5,7 @@ class Game {
 
     this.playerList = {};
 
-    //Phase mean what is currently happen in the game - waiting for players, murderer Input? etc
+    
     this.phase = Game.PHASES.WAITING_FOR_PLAYERS
   }
 
