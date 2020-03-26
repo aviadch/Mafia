@@ -11,14 +11,28 @@ class App extends React.Component {
     this.state = {
       phase: PHASE.START
     };
+
+    this.componentChoser = this.componentChoser.bind(this)
+  }
+
+  componentChoser() {
+    let retComp = null;
+    switch (this.state.phase) {
+      case PHASE.START:
+        retComp = <WelcomeMenu />;
+        break;
+
+      default:
+        retComp = null;
+    }
+    return retComp;
   }
 
   render() {
-    return (
-      <div className="App">
-        <WelcomeMenu />
-      </div>
-    );
+    const curComp = this.componentChoser()
+    return <div className="App">
+      {curComp}
+    </div>;
   }
 }
 
