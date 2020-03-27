@@ -1,14 +1,14 @@
 import React from "react";
 import WelcomeMenu from "./WelcomeMenu";
 import WaitingRoom from "./WaitingRoom";
+import { MyContext } from "./MyContext";
+import MyProvider from "./MyContext.js";
 
-import MyProvider from "./MyContext.js"
 const PHASE = {
   START: 0,
   WAITING_ROOM: 1,
   IN_GAME: 2
 };
-
 class App extends React.Component {
   constructor() {
     super();
@@ -35,13 +35,17 @@ class App extends React.Component {
   };
 
   render() {
-    const curComp = this.componentChoser();
+   
     return (
       <MyProvider>
-      <div className="App">
-        <p>Will be deleted</p>
-        {curComp}
-      </div>
+        <div className="App">
+          <MyContext.Consumer>
+            {context => {
+              const curComp = this.componentChoser(context.state.phase);
+              return <React.Fragment>{curComp}</React.Fragment>;
+            }}
+          </MyContext.Consumer>
+        </div>
       </MyProvider>
     );
   }
