@@ -1,29 +1,18 @@
 import React from "react";
-import PHASE from "./App";
-import WaitingRoom from "./WaitingRoom"
-import WelcomeMenu from "./WelcomeMenu"
+//import PHASE from "./App";
+//import WaitingRoom from "./WaitingRoom";
+//import WelcomeMenu from "./WelcomeMenu";
 export const MyContext = React.createContext();
+
+export const PHASE = {
+  START: 0,
+  WAITING_ROOM: 1,
+  IN_GAME: 2
+};
 
 class MyProvider extends React.Component {
   state = {
     phase: PHASE.START
-  };
-
-  componentChoser = () => {
-    let retComp = null;
-    switch (this.state.phase) {
-      case PHASE.START:
-        retComp = <WelcomeMenu />;
-        break;
-
-      case PHASE.WAITING_ROOM:
-        retComp = <WaitingRoom />;
-        break;
-
-      default:
-        retComp = null;
-    }
-    return retComp;
   };
 
   render() {
@@ -31,10 +20,11 @@ class MyProvider extends React.Component {
       <MyContext.Provider
         value={{
           state: this.state,
-          onNewGame: () =>
-            this.setState({
+          onNewGame: () => {
+            return this.setState({
               phase: PHASE.WAITING_ROOM
-            })
+            });
+          }
         }}
       >
         {this.props.children}
