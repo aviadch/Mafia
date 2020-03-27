@@ -3,12 +3,10 @@ import WelcomeMenu from "./WelcomeMenu";
 import WaitingRoom from "./WaitingRoom";
 import { MyContext } from "./MyContext";
 import MyProvider from "./MyContext.js";
-import {PHASE} from "./MyContext.js"
+import { PHASE } from "./MyContext.js";
 
 class App extends React.Component {
- 
-
-  componentChoser = (phase) => {
+  componentChoser = phase => {
     let retComp = null;
     switch (phase) {
       case PHASE.START:
@@ -26,14 +24,13 @@ class App extends React.Component {
   };
 
   render() {
-   
     return (
       <MyProvider>
         <div className="App">
           <MyContext.Consumer>
             {context => {
               const curComp = this.componentChoser(context.state.phase);
-              return <React.Fragment>{curComp}</React.Fragment>;
+              return <>{curComp}</>;
             }}
           </MyContext.Consumer>
         </div>

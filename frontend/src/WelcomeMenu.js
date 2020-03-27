@@ -15,7 +15,7 @@ class WelcomeMenu extends React.Component {
         <div className="buttonContainer">
           <MyContext.Consumer>
             {context => (
-              <React.Fragment>
+              <>
                 <div>
                   <Button
                     onClick={context.onNewGame}
@@ -31,7 +31,7 @@ class WelcomeMenu extends React.Component {
                     Join an Existing Game by ID
                   </Button>
                 </div>
-              </React.Fragment>
+              </>
             )}
           </MyContext.Consumer>
         </div>
