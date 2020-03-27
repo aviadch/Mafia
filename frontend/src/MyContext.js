@@ -29,6 +29,10 @@ class MyProvider extends React.Component {
       <MyContext.Provider
         value={{
           state: this.state,
+          onNewGame: () =>
+            this.setState({
+              phase: PHASE.WAITING_ROOM
+            })
         }}
       >
         {this.props.children}

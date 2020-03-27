@@ -1,11 +1,14 @@
 import React from "react";
 import WelcomeMenu from "./WelcomeMenu";
 import WaitingRoom from "./WaitingRoom";
+
+import MyProvider from "./MyContext.js"
 const PHASE = {
   START: 0,
   WAITING_ROOM: 1,
   IN_GAME: 2
 };
+
 class App extends React.Component {
   constructor() {
     super();
@@ -14,15 +17,11 @@ class App extends React.Component {
     };
   }
 
-  onNewGame = () => {
-    this.setState({ phase: PHASE.WAITING_ROOM });
-  };
-
   componentChoser = () => {
     let retComp = null;
     switch (this.state.phase) {
       case PHASE.START:
-        retComp = <WelcomeMenu newGameHandler={this.onNewGame} />;
+        retComp = <WelcomeMenu />;
         break;
 
       case PHASE.WAITING_ROOM:
@@ -37,7 +36,14 @@ class App extends React.Component {
 
   render() {
     const curComp = this.componentChoser();
-    return <div className="App">{curComp}</div>;
+    return (
+      <MyProvider>
+      <div className="App">
+        <p>Will be deleted</p>
+        {curComp}
+      </div>
+      </MyProvider>
+    );
   }
 }
 
