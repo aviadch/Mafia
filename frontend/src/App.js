@@ -12,20 +12,17 @@ class App extends React.Component {
     this.state = {
       phase: PHASE.START
     };
-
-    this.componentChoser = this.componentChoser.bind(this);
-    this.onNewGame = this.onNewGame.bind(this);
   }
 
-  onNewGame() {
+  onNewGame = () => {
     this.setState({ phase: PHASE.WAITING_ROOM });
-  }
+  };
 
-  componentChoser() {
+  componentChoser = () => {
     let retComp = null;
     switch (this.state.phase) {
       case PHASE.START:
-        retComp = <WelcomeMenu newGameHandler={this.onNewGame}/>;
+        retComp = <WelcomeMenu newGameHandler={this.onNewGame} />;
         break;
 
       case PHASE.WAITING_ROOM:
@@ -36,9 +33,7 @@ class App extends React.Component {
         retComp = null;
     }
     return retComp;
-  }
-
-  
+  };
 
   render() {
     const curComp = this.componentChoser();
