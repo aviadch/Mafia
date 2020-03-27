@@ -17,9 +17,9 @@ class App extends React.Component {
     };
   }
 
-  componentChoser = () => {
+  componentChoser = (phase) => {
     let retComp = null;
-    switch (this.state.phase) {
+    switch (phase) {
       case PHASE.START:
         retComp = <WelcomeMenu />;
         break;
