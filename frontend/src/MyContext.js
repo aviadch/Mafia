@@ -1,5 +1,7 @@
 import React from "react";
 import PHASE from "./App";
+import WaitingRoom from "./WaitingRoom"
+import WelcomeMenu from "./WelcomeMenu"
 export const MyContext = React.createContext();
 
 class MyProvider extends React.Component {
