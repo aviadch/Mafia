@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import "./WelcomeMenu.css";
+import "./WelcomeScreen.css";
 
-class WelcomeMenu extends Component {
+class WelcomeScreen extends Component {
   render() {
     return (
-      <div className="welcome-menu">
+      <div className="welcome-screen">
         <Typography variant="h1" component="h2">
           Hey - Welcome to Mafia Game
         </Typography>
@@ -29,4 +29,4 @@ class WelcomeMenu extends Component {
   }
 }
 
-export default WelcomeMenu;
+export default WelcomeScreen;

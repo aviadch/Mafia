@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import WelcomeMenu from "./WelcomeMenu";
+import WelcomeScreen from "./WelcomeScreen";
 import WaitingRoom from "./WaitingRoom";
 const PHASE = {
   START: 0,
@@ -23,7 +23,7 @@ class App extends Component {
     let retComp = null;
     switch (this.state.phase) {
       case PHASE.START:
-        retComp = <WelcomeMenu newGameHandler={this.onNewGame} />;
+        retComp = <WelcomeScreen newGameHandler={this.onNewGame} />;
         break;
 
       case PHASE.WAITING_ROOM:
