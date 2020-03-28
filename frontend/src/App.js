@@ -11,7 +11,7 @@ class App extends Component {
     let retComp = null;
     switch (phase) {
       case PHASE.START:
-        retComp = <WelcomeMenu />;
+        retComp = <WelcomeScreen />;
         break;
 
       case PHASE.WAITING_ROOM:
