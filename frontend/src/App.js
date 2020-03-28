@@ -1,11 +1,12 @@
-import React from "react";
-import WelcomeMenu from "./WelcomeMenu";
+import React, { Component } from "react";
+
+import WelcomeScreen from "./WelcomeScreen";
 import WaitingRoom from "./WaitingRoom";
 import { MyContext } from "./MyContext";
 import MyProvider from "./MyContext.js";
 import { PHASE } from "./MyContext.js";
 
-class App extends React.Component {
+class App extends Component {
   componentChoser = phase => {
     let retComp = null;
     switch (phase) {
