@@ -18,7 +18,7 @@ class App extends React.Component {
     this.setState({ phase: PHASE.WAITING_ROOM });
   };
 
-  componentChoser = () => {
+  screenChoser = () => {
     let retComp = null;
     switch (this.state.phase) {
       case PHASE.START:
@@ -36,7 +36,7 @@ class App extends React.Component {
   };
 
   render() {
-    const curComp = this.componentChoser();
+    const curComp = this.screenChoser();
     return <div className="App">{curComp}</div>;
   }
 }
