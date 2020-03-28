@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
+
 import WelcomeMenu from "./WelcomeMenu";
 import WaitingRoom from "./WaitingRoom";
 const PHASE = {
@@ -6,7 +7,7 @@ const PHASE = {
   WAITING_ROOM: 1,
   IN_GAME: 2
 };
-class App extends React.Component {
+class App extends Component {
   constructor() {
     super();
     this.state = {
