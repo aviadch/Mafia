@@ -1,4 +1,4 @@
-import React from "react";
+import React,{Component} from "react";
 //import PHASE from "./App";
 //import WaitingRoom from "./WaitingRoom";
 //import WelcomeMenu from "./WelcomeMenu";
@@ -10,7 +10,7 @@ export const PHASE = {
   IN_GAME: 2
 };
 
-class MyProvider extends React.Component {
+class MyProvider extends Component {
   state = {
     phase: PHASE.WELCOME_SCREEN
   };
