@@ -15,16 +15,18 @@ class MyProvider extends React.Component {
     phase: PHASE.WELCOME_SCREEN
   };
 
+  onNewGame = () => {
+    return this.setState({
+      phase: PHASE.WAITING_ROOM
+    });
+  };
+
   render() {
     return (
       <MyContext.Provider
         value={{
           state: this.state,
-          onNewGame: () => {
-            return this.setState({
-              phase: PHASE.WAITING_ROOM
-            });
-          }
+          onNewGame: this.onNewGame
         }}
       >
         {this.props.children}
