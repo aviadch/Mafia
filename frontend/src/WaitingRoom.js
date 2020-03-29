@@ -39,7 +39,7 @@ class WaitingRoom extends Component {
         </Button>
         <h2>game id</h2>
 
-        <WaitingPlayers playerList={this.state.playerList} />
+        <WaitingPlayers />
       </div>
     );
   }
