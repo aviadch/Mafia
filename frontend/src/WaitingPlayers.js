@@ -10,7 +10,7 @@ class WaitingPlayers extends Component {
         {context => {
           return (
             <div className="waiting-players">
-              <h1>waiting players</h1>
+              <h1>SB players</h1>
               {
               context.state.playerList.map(player => (<Player name={player} key={player} />))
               }
