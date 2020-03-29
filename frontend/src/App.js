@@ -4,7 +4,7 @@ import WelcomeScreen from "./WelcomeScreen";
 import WaitingRoom from "./WaitingRoom";
 import { MyContext } from "./MyContext";
 import MyProvider from "./MyContext.js";
-import { PHASE } from "./MyContext.js";
+import { PHASE } from "./consts.js";
 
 class App extends Component {
   componentChoser = phase => {

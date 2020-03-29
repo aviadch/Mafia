@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-export const MyContext = React.createContext();
+import { PHASE } from "./consts.js";
 
-export const PHASE = {
-  WELCOME_SCREEN: 0,
-  WAITING_ROOM: 1,
-  IN_GAME: 2
-};
+export const MyContext = React.createContext();
 
 class MyProvider extends Component {
   state = {
