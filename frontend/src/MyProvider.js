@@ -5,9 +5,9 @@ import { PHASE } from "./consts";
 class MyProvider extends Component {
   state = {
     phase: PHASE.WELCOME_SCREEN,
-    currentRoom:{},
+    currentRoom: {},
     isUserEntered: false,
-    playerName:"",
+    playerName: "",
     playerList: []
   };
 
@@ -18,18 +18,18 @@ class MyProvider extends Component {
   };
 
   onNameEnteredHandle = name => {
-    console.log(name)
     this.setState({
       isUserEntered: true,
+      playerName: name,
       playerList: [...this.state.playerList, name]
     });
   };
 
-  setName = (name)=>{
+  setName = name => {
     this.setState({
       playerName: name
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -38,7 +38,7 @@ class MyProvider extends Component {
           state: this.state,
           onNewGame: this.onNewGame,
           onNameEnteredHandle: this.onNameEnteredHandle,
-          setName:this.setName
+          setName: this.setName
         }}
       >
         {this.props.children}
