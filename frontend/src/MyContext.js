@@ -1,7 +1,4 @@
-import React,{Component} from "react";
-//import PHASE from "./App";
-//import WaitingRoom from "./WaitingRoom";
-//import WelcomeMenu from "./WelcomeMenu";
+import React, { Component } from "react";
 export const MyContext = React.createContext();
 
 export const PHASE = {
