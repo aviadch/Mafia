@@ -4,7 +4,8 @@ import {PHASE} from "./consts"
 
 class MyProvider extends Component {
   state = {
-    phase: PHASE.WELCOME_SCREEN
+    phase: PHASE.WELCOME_SCREEN,
+    isUserEntered: false
   };
 
   onNewGame = () => {

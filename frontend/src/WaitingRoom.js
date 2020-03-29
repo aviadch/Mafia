@@ -1,9 +1,8 @@
-
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import EnterName from "./EnterName";
 import WaitingPlayers from "./WaitingPlayers";
-
+import Button from "@material-ui/core/Button";
 const MOCK_playerList = ["Elisha", "Lahav", "Aviad"];
 class WaitingRoom extends Component {
   constructor() {
@@ -17,8 +16,8 @@ class WaitingRoom extends Component {
 
   onNameEnteredHandle(name) {
     this.setState(prevState => ({
-        isUserEntered:true,
-        playerList: [...prevState.playerList, name]
+      isUserEntered: true,
+      playerList: [...prevState.playerList, name]
     }));
   }
 
@@ -31,12 +30,12 @@ class WaitingRoom extends Component {
         {this.state.isUserEntered ? null : (
           <EnterName handler={this.onNameEnteredHandle} />
         )}
-        <button>Start the game</button>
+        <Button variant="contained" color="primary">
+          Start the game
+        </Button>
         <h2>game id</h2>
 
         <WaitingPlayers playerList={this.state.playerList} />
-
-
       </div>
     );
   }

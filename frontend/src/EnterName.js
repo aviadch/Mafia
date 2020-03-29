@@ -1,7 +1,7 @@
-import React from "react";
+import React,{Component} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-class EnterName extends React.Component {
+class EnterName extends Component {
   constructor(props) {
     super(props);
     this.state = {
