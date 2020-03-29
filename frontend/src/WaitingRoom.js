@@ -23,17 +23,14 @@ class WaitingRoom extends Component {
         </Typography>
         <MyContext.Consumer>
           {context => {
-            console.log(context)
             if (!context.state.isUserEntered) {
               return (
                 <>
                   <EnterName />
                 </>
               );
-            
-            }
-            else{
-              return(<></>)
+            } else {
+              return <></>;
             }
           }}
         </MyContext.Consumer>
