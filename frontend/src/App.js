@@ -2,43 +2,41 @@ import React, { Component } from "react";
 
 import WelcomeScreen from "./WelcomeScreen";
 import WaitingRoom from "./WaitingRoom";
-const PHASE = {
-  START: 0,
-  WAITING_ROOM: 1,
-  IN_GAME: 2
-};
+import { MyContext } from "./MyContext";
+import MyProvider from "./MyProvider.js";
+import { PHASE } from "./consts.js";
+
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      phase: PHASE.START
-    };
-  }
-
-  onNewGame = () => {
-    this.setState({ phase: PHASE.WAITING_ROOM });
-  };
-
-  screenChoser = () => {
-    let retComp = null;
-    switch (this.state.phase) {
-      case PHASE.START:
-        retComp = <WelcomeScreen newGameHandler={this.onNewGame} />;
+  screenChooser = phase => {
+    let screen = null;
+    switch (phase) {
+      case PHASE.WELCOME_SCREEN:
+        screen = <WelcomeScreen />;
         break;
 
       case PHASE.WAITING_ROOM:
-        retComp = <WaitingRoom />;
+        screen = <WaitingRoom />;
         break;
 
       default:
-        retComp = null;
+        screen = null;
     }
-    return retComp;
+    return screen;
   };
 
   render() {
-    const curComp = this.screenChoser();
-    return <div className="App">{curComp}</div>;
+    return (
+      <MyProvider>
+        <div className="App">
+          <MyContext.Consumer>
+            {context => {
+              const screen = this.screenChooser(context.state.phase);
+              return <>{screen}</>;
+            }}
+          </MyContext.Consumer>
+        </div>
+      </MyProvider>
+    );
   }
 }
 
