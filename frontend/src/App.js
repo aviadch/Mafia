@@ -7,21 +7,21 @@ import MyProvider from "./MyProvider.js";
 import { PHASE } from "./consts.js";
 
 class App extends Component {
-  componentChoser = phase => {
-    let retComp = null;
+  screenChooser = phase => {
+    let screen = null;
     switch (phase) {
       case PHASE.WELCOME_SCREEN:
-        retComp = <WelcomeScreen />;
+        screen = <WelcomeScreen />;
         break;
 
       case PHASE.WAITING_ROOM:
-        retComp = <WaitingRoom />;
+        screen = <WaitingRoom />;
         break;
 
       default:
-        retComp = null;
+        screen = null;
     }
-    return retComp;
+    return screen;
   };
 
   render() {
@@ -30,8 +30,8 @@ class App extends Component {
         <div className="App">
           <MyContext.Consumer>
             {context => {
-              const curComp = this.componentChoser(context.state.phase);
-              return <>{curComp}</>;
+              const screen = this.screenChooser(context.state.phase);
+              return <>{screen}</>;
             }}
           </MyContext.Consumer>
         </div>
