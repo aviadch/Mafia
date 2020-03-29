@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 class EnterName extends React.Component {
   constructor(props) {
     super(props);
@@ -15,14 +16,12 @@ class EnterName extends React.Component {
   render() {
     return (
       <div className="Enter Name">
-        <input
-          type="text"
-          value={this.state.value}
-          onChange={this.handleChange}
-          placeholder="Enter Your Name"
-        />
-        <Button variant="contained"
-                    color="primary" onClick={() => this.props.handler(this.state.value)}>
+        <TextField id="standard-basic" label="Enter Your Name" />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => this.props.handler(this.state.value)}
+        >
           Submit
         </Button>
       </div>
