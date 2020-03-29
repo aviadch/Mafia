@@ -5,14 +5,14 @@ import React from "react";
 export const MyContext = React.createContext();
 
 export const PHASE = {
-  START: 0,
+  WELCOME_SCREEN: 0,
   WAITING_ROOM: 1,
   IN_GAME: 2
 };
 
 class MyProvider extends React.Component {
   state = {
-    phase: PHASE.START
+    phase: PHASE.WELCOME_SCREEN
   };
 
   render() {

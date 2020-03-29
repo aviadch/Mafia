@@ -10,7 +10,7 @@ class App extends Component {
   componentChoser = phase => {
     let retComp = null;
     switch (phase) {
-      case PHASE.START:
+      case PHASE.WELCOME_SCREEN:
         retComp = <WelcomeScreen />;
         break;
 
