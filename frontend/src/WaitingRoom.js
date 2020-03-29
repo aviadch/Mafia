@@ -11,7 +11,7 @@ class WaitingRoom extends Component {
       isUserEntered: false,
       playerList: MOCK_playerList
     };
-    this.onNameEnteredHandle = this.onNameEnteredHandle.bind(this);
+
   }
 
   
