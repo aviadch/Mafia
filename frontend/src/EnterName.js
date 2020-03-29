@@ -1,28 +1,26 @@
-import React,{Component} from "react";
+import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import { MyContext } from "./MyContext.js";
 class EnterName extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: ""
-    };
-    
-  }
-
-  
   render() {
     return (
-      <div className="Enter Name">
-        <TextField id="standard-basic" label="Enter Your Name" />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => this.props.handler(this.state.value)}
-        >
-          Submit
-        </Button>
-      </div>
+      <MyContext.Consumer>
+        {context => (
+          <>
+            <div className="Enter Name">
+              <TextField id="standard-basic" label="Enter Your Name" />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={context.onNameEnteredHandle}
+              >
+                Submit
+              </Button>
+            </div>
+          </>
+        )}
+      </MyContext.Consumer>
     );
   }
 }

@@ -3,6 +3,8 @@ import Typography from "@material-ui/core/Typography";
 import EnterName from "./EnterName";
 import WaitingPlayers from "./WaitingPlayers";
 import Button from "@material-ui/core/Button";
+import { MyContext } from "./MyContext.js";
+
 const MOCK_playerList = ["Elisha", "Lahav", "Aviad"];
 class WaitingRoom extends Component {
   constructor() {
@@ -11,10 +13,7 @@ class WaitingRoom extends Component {
       isUserEntered: false,
       playerList: MOCK_playerList
     };
-
   }
-
-  
 
   render() {
     return (
@@ -22,9 +21,22 @@ class WaitingRoom extends Component {
         <Typography variant="h1" component="h2" gutterBottom>
           Waiting Room
         </Typography>
-        {this.state.isUserEntered ? null : (
-          <EnterName handler={this.onNameEnteredHandle} />
-        )}
+        <MyContext.Consumer>
+          {context => {
+            console.log(context)
+            if (!context.state.isUserEntered) {
+              return (
+                <>
+                  <EnterName />
+                </>
+              );
+            
+            }
+            else{
+              return(<></>)
+            }
+          }}
+        </MyContext.Consumer>
         <Button variant="contained" color="primary">
           Start the game
         </Button>
