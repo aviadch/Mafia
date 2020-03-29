@@ -27,7 +27,7 @@ class WelcomeScreen extends Component {
                 </div>
                 <div>
                   <Button variant="contained" color="primary">
-                    Join an Existing Game by ID
+                    Join Game
                   </Button>
                 </div>
               </>
