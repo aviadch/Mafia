@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { MyContext } from "./MyContext";
-import {PHASE} from "./consts"
+import { PHASE } from "./consts";
 
 class MyProvider extends Component {
   state = {
@@ -15,13 +15,12 @@ class MyProvider extends Component {
     });
   };
 
-  onNameEnteredHandle = (name) => {
+  onNameEnteredHandle = name => {
     this.setState({
       isUserEntered: true,
       playerList: [...this.state.playerList, name]
     });
-  }
-
+  };
 
   render() {
     return (
@@ -29,7 +28,7 @@ class MyProvider extends Component {
         value={{
           state: this.state,
           onNewGame: this.onNewGame,
-          onNameEnteredHandle:this.onNameEnteredHandle
+          onNameEnteredHandle: this.onNameEnteredHandle
         }}
       >
         {this.props.children}
