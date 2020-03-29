@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import WelcomeScreen from "./WelcomeScreen";
 import WaitingRoom from "./WaitingRoom";
 import { MyContext } from "./MyContext";
-import MyProvider from "./MyContext.js";
+import MyProvider from "./MyProvider.js";
 import { PHASE } from "./consts.js";
 
 class App extends Component {
