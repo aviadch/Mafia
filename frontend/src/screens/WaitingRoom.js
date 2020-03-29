@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
-import EnterName from "./EnterName";
-import WaitingPlayers from "./WaitingPlayers";
+import EnterName from "../components/EnterName";
+import WaitingPlayers from "../components/WaitingPlayers";
 import Button from "@material-ui/core/Button";
-import { MyContext } from "./MyContext.js";
+import { MyContext } from "../infra/MyContext.js";
 
 const MOCK_playerList = ["Elisha", "Lahav", "Aviad"];
 class WaitingRoom extends Component {

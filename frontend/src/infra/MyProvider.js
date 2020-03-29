@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { MyContext } from "./MyContext";
-import { PHASE } from "./consts";
+import { PHASE,SERVER_ADDRESS } from "../shared_code/consts";
+import axios from "axios"
+
 
 class MyProvider extends Component {
   state = {
@@ -18,6 +20,7 @@ class MyProvider extends Component {
   };
 
   onNameEnteredHandle = name => {
+    axios.post(SERVER_ADDRESS+"/create",{message:"hi"})
     this.setState({
       isUserEntered: true,
       playerName: name,

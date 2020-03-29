@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-import WelcomeScreen from "./WelcomeScreen";
-import WaitingRoom from "./WaitingRoom";
-import { MyContext } from "./MyContext";
-import MyProvider from "./MyProvider.js";
-import { PHASE } from "./consts.js";
+import WelcomeScreen from "./screens/WelcomeScreen";
+import WaitingRoom from "./screens/WaitingRoom";
+import { MyContext } from "./infra/MyContext";
+import MyProvider from "./infra/MyProvider.js";
+import { PHASE } from "./shared_code/consts.js";
 
 class App extends Component {
   screenChooser = phase => {

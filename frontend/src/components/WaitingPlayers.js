@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Player from "./Player";
-import { MyContext } from "./MyContext.js";
+import { MyContext } from "../infra/MyContext.js";
 
 class WaitingPlayers extends Component {
   render() {
