@@ -14,12 +14,7 @@ class WaitingRoom extends Component {
     this.onNameEnteredHandle = this.onNameEnteredHandle.bind(this);
   }
 
-  onNameEnteredHandle(name) {
-    this.setState(prevState => ({
-      isUserEntered: true,
-      playerList: [...prevState.playerList, name]
-    }));
-  }
+  
 
   render() {
     return (

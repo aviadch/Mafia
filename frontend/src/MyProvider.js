@@ -5,7 +5,8 @@ import {PHASE} from "./consts"
 class MyProvider extends Component {
   state = {
     phase: PHASE.WELCOME_SCREEN,
-    isUserEntered: false
+    isUserEntered: false,
+    playerList: []
   };
 
   onNewGame = () => {
@@ -14,12 +15,21 @@ class MyProvider extends Component {
     });
   };
 
+  onNameEnteredHandle = (name) => {
+    this.setState({
+      isUserEntered: true,
+      playerList: [...this.state.playerList, name]
+    });
+  }
+
+
   render() {
     return (
       <MyContext.Provider
         value={{
           state: this.state,
-          onNewGame: this.onNewGame
+          onNewGame: this.onNewGame,
+          onNameEnteredHandle:this.onNameEnteredHandle
         }}
       >
         {this.props.children}
