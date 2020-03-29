@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "@material-ui/core/Button";
 class EnterName extends React.Component {
   constructor(props) {
     super(props);
@@ -20,9 +21,10 @@ class EnterName extends React.Component {
           onChange={this.handleChange}
           placeholder="Enter Your Name"
         />
-        <button onClick={() => this.props.handler(this.state.value)}>
+        <Button variant="contained"
+                    color="primary" onClick={() => this.props.handler(this.state.value)}>
           Submit
-        </button>
+        </Button>
       </div>
     );
   }
