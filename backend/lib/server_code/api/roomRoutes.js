@@ -10,13 +10,13 @@ let roomPlayers = [];
 roomRouter.use((req, res, next) => {
   res.date = Date.now();
   console.log("Time: ", Date.now());
-  
+
   next();
 });
 
 roomRouter.post("/create", (req, res) => {
-  console.log(req.body);
-  const { creatorID } = req.query;
+  const { creatorID } = req.body;
+  console.log(creatorID);
   roomPlayers.push(creatorID);
   roomCreated = true;
   res.send({ roomID: 1, creatorID, creationDate: res.date });

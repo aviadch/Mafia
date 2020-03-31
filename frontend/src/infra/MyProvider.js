@@ -1,28 +1,38 @@
 import React, { Component } from "react";
 import { MyContext } from "./MyContext";
 import { PHASE, SERVER_ADDRESS } from "../shared_code/consts";
+import Shortid from "shortid";
 import axios from "axios";
 
 class MyProvider extends Component {
   state = {
     phase: PHASE.WELCOME_SCREEN,
-    currentRoom: {},
+    currentRoom: "",
     isUserEntered: false,
     playerName: "",
-    playerList: []
+    playerId: "",
+    playerList: [],
+    roomCreationDate: ""
   };
 
   onNewGame = () => {
-    return this.setState({
-      phase: PHASE.WAITING_ROOM
+    const playerId = Shortid.generate();
+    this.setState({
+      phase: PHASE.WAITING_ROOM,
+      playerId: playerId
+    });
+    const req = { creatorID: playerId };
+    axios.post(SERVER_ADDRESS + "/room/create", req).then(res => {
+      const { roomID, a, creationDate } = res.data;
+      this.setState({
+        currentRoom: roomID,
+        roomCreationDate: creationDate
+      });
+      console.log("state has change to:", this.state);
     });
   };
 
   onNameEntered = name => {
-    const req = { name: name };
-    axios
-      .post(SERVER_ADDRESS + "/room/create", req)
-      .then(console.log("response recied"));
     this.setState({
       isUserEntered: true,
       playerName: name,
