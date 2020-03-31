@@ -18,7 +18,7 @@ class MyProvider extends Component {
     });
   };
 
-  onNameEnteredHandle = name => {
+  onNameEntered = name => {
     const req = { name: name };
     axios
       .post(SERVER_ADDRESS + "/room/create", req)
@@ -42,7 +42,7 @@ class MyProvider extends Component {
         value={{
           state: this.state,
           onNewGame: this.onNewGame,
-          onNameEnteredHandle: this.onNameEnteredHandle,
+          onNameEntered: this.onNameEntered,
           setName: this.setName
         }}
       >

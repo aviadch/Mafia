@@ -29,7 +29,7 @@ class EnterName extends Component {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  return context.onNameEnteredHandle(this.state.name);
+                  return context.onNameEntered(this.state.name);
                 }}
               >
                 Submit
