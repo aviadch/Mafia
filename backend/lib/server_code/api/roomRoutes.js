@@ -1,4 +1,5 @@
 const express = require("express");
+
 let roomRouter = express.Router();
 
 // Mockups
@@ -9,10 +10,12 @@ let roomPlayers = [];
 roomRouter.use((req, res, next) => {
   res.date = Date.now();
   console.log("Time: ", Date.now());
+  
   next();
 });
 
 roomRouter.post("/create", (req, res) => {
+  console.log(req.body);
   const { creatorID } = req.query;
   roomPlayers.push(creatorID);
   roomCreated = true;
