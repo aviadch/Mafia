@@ -33,6 +33,13 @@ class MyProvider extends Component {
   };
 
   onNameEntered = name => {
+    axios.get(
+      SERVER_ADDRESS +
+        "/room/join?userID=" +
+        this.state.playerId +
+        "&roomID=" +
+        this.state.currentRoom
+    );
     this.setState({
       isUserEntered: true,
       playerName: name,
