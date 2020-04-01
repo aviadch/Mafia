@@ -12,6 +12,7 @@ class MyProvider extends Component {
     playerName: "",
     playerId: "",
     playerList: [],
+    joinDate: "",
     roomCreationDate: ""
   };
 
@@ -33,18 +34,27 @@ class MyProvider extends Component {
   };
 
   onNameEntered = name => {
-    axios.get(
-      SERVER_ADDRESS +
-        "/room/join?userID=" +
-        this.state.playerId +
-        "&roomID=" +
-        this.state.currentRoom
-    );
-    this.setState({
-      isUserEntered: true,
-      playerName: name,
-      playerList: [...this.state.playerList, name]
-    });
+    axios
+      .get(
+        SERVER_ADDRESS +
+          "/room/join?userID=" +
+          this.state.playerId +
+          "&roomID=" +
+          this.state.currentRoom
+      )
+      .then(res => {
+        const { joinDate, roomPlayers, error, errorMessage } = res.data;
+        if (error) {
+          console.log(errorMessage);
+        } else {
+          this.setState({
+            isUserEntered: true,
+            playerName: name,
+            joinDate: joinDate,
+            playerList: [...roomPlayers]
+          });
+        }
+      });
   };
 
   setName = name => {
