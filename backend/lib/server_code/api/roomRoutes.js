@@ -16,7 +16,6 @@ roomRouter.use((req, res, next) => {
 
 roomRouter.post("/create", (req, res) => {
   const { creatorID } = req.body;
-  console.log(creatorID);
   roomPlayers.push(creatorID);
   roomCreated = true;
   res.send({ roomID: 1, creatorID, creationDate: res.date });

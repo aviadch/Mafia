@@ -29,7 +29,6 @@ class MyProvider extends Component {
         currentRoom: roomID,
         roomCreationDate: creationDate
       });
-      console.log("state has change to:", this.state);
     });
   };
 
