@@ -8,8 +8,20 @@ import {
 } from "../shared_code/consts";
 import Shortid from "shortid";
 import axios from "axios";
+import socketIOClient from "socket.io-client";
+const socket = socketIOClient(SERVER_ADDRESS + ":" + SOCKET_PORT);
 
 class MyProvider extends Component {
+  constructor() {
+    super();
+    socket.on("NewPlayer", data => {
+      console.log(data);
+      this.setState({
+        playerList: data.roomPlayers
+      });
+    });
+  }
+
   state = {
     phase: PHASE.WELCOME_SCREEN,
     currentRoom: "",
