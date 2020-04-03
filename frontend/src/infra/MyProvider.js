@@ -32,6 +32,15 @@ class MyProvider extends Component {
     });
   };
 
+  joinGame = roomId => {
+    const playerId = Shortid.generate();
+    this.setState({
+      phase: PHASE.WAITING_ROOM,
+      currentRoom: roomId,
+      playerId: playerId
+    });
+  };
+
   onNameEntered = name => {
     axios
       .get(
@@ -69,6 +78,7 @@ class MyProvider extends Component {
           state: this.state,
           onNewGame: this.onNewGame,
           onNameEntered: this.onNameEntered,
+          joinGame: this.joinGame,
           setName: this.setName
         }}
       >

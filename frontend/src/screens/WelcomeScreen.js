@@ -3,8 +3,20 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import "./WelcomeScreen.css";
 import { MyContext } from "../infra/MyContext";
+import TextField from "@material-ui/core/TextField";
 
 class WelcomeScreen extends Component {
+  constructor() {
+    super();
+    this.state = {
+      roomToJoin: ""
+    };
+  }
+  onChange = event => {
+    const value = event.target.value;
+    console.log(this.state.roomToJoin);
+    this.setState({ roomToJoin: value });
+  };
   render() {
     return (
       <div className="welcome-screen">
@@ -26,7 +38,16 @@ class WelcomeScreen extends Component {
                   </Button>
                 </div>
                 <div>
-                  <Button variant="contained" color="primary">
+                  <TextField
+                    onChange={this.onChange}
+                    id="standard-basic"
+                    label="RoomId"
+                  />
+                  <Button
+                    onClick={() => context.joinGame(this.state.roomToJoin)}
+                    variant="contained"
+                    color="primary"
+                  >
                     Join Game
                   </Button>
                 </div>
