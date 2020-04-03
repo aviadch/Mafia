@@ -1,4 +1,5 @@
 const express = require("express");
+const { socket } = require("./socket.js");
 
 let roomRouter = express.Router();
 
@@ -23,8 +24,13 @@ roomRouter.post("/create", (req, res) => {
 
 roomRouter.get("/join", (req, res) => {
   const { userID, roomID } = req.query;
+  console.log("roomID:", roomID);
   if (Number(roomID) === 1 && roomCreated) {
     roomPlayers.push(userID);
+    socket.emit("NewPlayer", {
+      message: "new player has joing the room",
+      roomPlayers
+    });
     res.send({ joinDate: res.date, roomPlayers });
   } else {
     res.send({ error: true, errorMessage: `room ${roomID} does not exists` });
