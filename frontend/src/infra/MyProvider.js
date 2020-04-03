@@ -8,7 +8,7 @@ class MyProvider extends Component {
   state = {
     phase: PHASE.WELCOME_SCREEN,
     currentRoom: "",
-    isUserEntered: false,
+    isUserEnteredName: false,
     playerName: "",
     playerId: "",
     playerList: [],
@@ -47,7 +47,7 @@ class MyProvider extends Component {
           console.log(errorMessage);
         } else {
           this.setState({
-            isUserEntered: true,
+            isUserEnteredName: true,
             playerName: name,
             joinDate: joinDate,
             playerList: [...roomPlayers]

@@ -10,7 +10,7 @@ class WaitingRoom extends Component {
   constructor() {
     super();
     this.state = {
-      isUserEntered: false,
+      isUserEnteredName: false,
       playerList: MOCK_playerList
     };
   }
@@ -25,7 +25,7 @@ class WaitingRoom extends Component {
                 <Typography variant="h1" component="h2" gutterBottom>
                   Waiting Room - RoomId: {context.state.currentRoom}
                 </Typography>
-                {!context.state.isUserEntered ? (
+                {!context.state.isUserEnteredName ? (
                   <>
                     <EnterName />
                   </>
