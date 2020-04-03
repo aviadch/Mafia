@@ -23,10 +23,11 @@ roomRouter.post("/create", (req, res) => {
 });
 
 roomRouter.get("/join", (req, res) => {
-  const { userID, roomID } = req.query;
+  const { userID, roomID, playerName } = req.query;
+  const playerToAdd = { id: userID, name: playerName };
   console.log("roomID:", roomID);
   if (Number(roomID) === 1 && roomCreated) {
-    roomPlayers.push(userID);
+    roomPlayers.push(playerToAdd);
     socket.emit("NewPlayer", {
       message: "new player has joing the room",
       roomPlayers

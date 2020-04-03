@@ -15,7 +15,6 @@ class MyProvider extends Component {
   constructor() {
     super();
     socket.on("NewPlayer", data => {
-      console.log(data);
       this.setState({
         playerList: data.roomPlayers
       });
@@ -69,7 +68,9 @@ class MyProvider extends Component {
           "/room/join?userID=" +
           this.state.playerId +
           "&roomID=" +
-          this.state.currentRoom
+          this.state.currentRoom +
+          "&playerName=" +
+          name
       )
       .then(res => {
         const { joinDate, roomPlayers, error, errorMessage } = res.data;

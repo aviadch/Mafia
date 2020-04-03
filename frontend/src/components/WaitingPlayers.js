@@ -11,7 +11,7 @@ class WaitingPlayers extends Component {
             <span className="waiting-players">
               <h1>Waiting Players</h1>
               {context.state.playerList.map(player => (
-                <Player name={player} key={player} />
+                <Player name={player["name"]} key={player["id"]} />
               ))}
             </span>
           );
