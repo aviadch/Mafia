@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { MyContext } from "./MyContext";
-import { PHASE, SERVER_ADDRESS } from "../shared_code/consts";
+import {
+  PHASE,
+  SERVER_ADDRESS,
+  SOCKET_PORT,
+  SERVER_PORT
+} from "../shared_code/consts";
 import Shortid from "shortid";
 import axios from "axios";
 
@@ -23,13 +28,15 @@ class MyProvider extends Component {
       playerId: playerId
     });
     const req = { creatorID: playerId };
-    axios.post(SERVER_ADDRESS + "/room/create", req).then(res => {
-      const { roomID, a, creationDate } = res.data;
-      this.setState({
-        currentRoom: roomID,
-        roomCreationDate: creationDate
+    axios
+      .post(SERVER_ADDRESS + ":" + SERVER_PORT + "/room/create", req)
+      .then(res => {
+        const { roomID, a, creationDate } = res.data;
+        this.setState({
+          currentRoom: roomID,
+          roomCreationDate: creationDate
+        });
       });
-    });
   };
 
   joinGame = roomId => {
@@ -45,6 +52,8 @@ class MyProvider extends Component {
     axios
       .get(
         SERVER_ADDRESS +
+          ":" +
+          SERVER_PORT +
           "/room/join?userID=" +
           this.state.playerId +
           "&roomID=" +

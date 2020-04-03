@@ -4,6 +4,7 @@ export const PHASE = {
   IN_GAME: 2
 };
 
-export const SERVER_ADDRESS = "http://localhost:8080";
+export const SERVER_ADDRESS = "http://localhost";
+export const SERVER_PORT = "8080";
 
 export const SOCKET_PORT = "4001";
