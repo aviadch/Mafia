@@ -4,17 +4,16 @@ import { MyContext } from "../infra/MyContext.js";
 
 class WaitingPlayers extends Component {
   render() {
-    
     return (
       <MyContext.Consumer>
         {context => {
           return (
-            <div className="waiting-players">
-              <h1>SB players</h1>
-              {
-              context.state.playerList.map(player => (<Player name={player} key={player} />))
-              }
-            </div>
+            <span className="waiting-players">
+              <h1>Waiting Players</h1>
+              {context.state.playerList.map(player => (
+                <Player name={player} key={player} />
+              ))}
+            </span>
           );
         }}
       </MyContext.Consumer>
