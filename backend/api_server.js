@@ -1,6 +1,6 @@
 // import express (after npm install express)
 const express = require("express");
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 
 // create new express app and save it as "app"
 const app = express();
