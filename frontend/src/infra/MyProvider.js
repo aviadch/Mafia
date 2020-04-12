@@ -46,6 +46,9 @@ const MyProvider = (props) => {
         });
 
         console.log(state);
+      })
+      .catch((err) => {
+        window.alert(`Server giving us something wrong! ${err}`);
       });
 
     console.log(state);
