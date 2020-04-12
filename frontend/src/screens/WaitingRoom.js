@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
-import EnterName from "../components/EnterName";
+import InputName from "../components/InputName";
 import WaitingPlayers from "../components/WaitingPlayers";
 import Button from "@material-ui/core/Button";
 import { MyContext } from "../infra/MyContext.js";
@@ -11,7 +11,7 @@ class WaitingRoom extends Component {
     super();
     this.state = {
       isUserEntered: false,
-      playerList: MOCK_playerList
+      playerList: MOCK_playerList,
     };
   }
 
@@ -19,7 +19,7 @@ class WaitingRoom extends Component {
     return (
       <div className="waiting-room">
         <MyContext.Consumer>
-          {context => {
+          {(context) => {
             return (
               <div>
                 <Typography variant="h1" component="h2" gutterBottom>
@@ -27,7 +27,7 @@ class WaitingRoom extends Component {
                 </Typography>
                 {!context.state.isUserEntered ? (
                   <>
-                    <EnterName />
+                    <InputName />
                   </>
                 ) : (
                   <></>

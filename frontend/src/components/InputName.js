@@ -2,22 +2,22 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { MyContext } from "../infra/MyContext.js";
-class EnterName extends Component {
+class InputName extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: ""
+      name: "",
     };
   }
 
-  handleOnChange = event => {
+  handleOnChange = (event) => {
     this.setState({ name: event.target.value });
   };
 
   render() {
     return (
       <MyContext.Consumer>
-        {context => (
+        {(context) => (
           <>
             <div className="Enter Name">
               <TextField
@@ -42,4 +42,4 @@ class EnterName extends Component {
   }
 }
 
-export default EnterName;
+export default InputName;
