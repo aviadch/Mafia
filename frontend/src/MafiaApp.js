@@ -1,13 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import WelcomeScreen from "./screens/WelcomeScreen";
 import WaitingRoom from "./screens/WaitingRoom";
-import { MyContext } from "./infra/MyContext";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-// import { PHASE } from "./shared_code/consts.js";
+import { Switch, Route } from "react-router-dom";
 
 const MafiaApp = () => {
-  const context = useContext(MyContext);
   return (
     <div className="MafiaApp">
       <Switch>
