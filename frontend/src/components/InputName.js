@@ -19,7 +19,7 @@ class InputName extends Component {
       <MyContext.Consumer>
         {(context) => (
           <>
-            <div className="Enter Name">
+            <div className="inputWrapper">
               <TextField
                 onChange={this.handleOnChange}
                 id="standard-basic"
