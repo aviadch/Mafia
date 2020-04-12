@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { MyContext } from "./MyContext";
 import {
-  PHASE,
   SERVER_ADDRESS,
   SOCKET_PORT,
   SERVER_PORT,
@@ -14,7 +13,6 @@ const socket = socketIOClient(SERVER_ADDRESS + ":" + SOCKET_PORT);
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
-    phase: PHASE.WELCOME_SCREEN,
     currentRoom: "",
     isUserEnteredName: false,
     playerName: "",
@@ -42,14 +40,12 @@ const MyProvider = (props) => {
         console.log(`roomID:${roomID}`);
         setState({
           ...state,
-          phase: PHASE.WAITING_ROOM,
           playerId: playerId,
           currentRoom: roomID,
           roomCreationDate: creationDate,
         });
 
         console.log(state);
-        history.push("/room");
       });
 
     console.log(state);
@@ -59,10 +55,10 @@ const MyProvider = (props) => {
     const playerId = Shortid.generate();
     setState({
       ...state,
-      phase: PHASE.WAITING_ROOM,
       currentRoom: roomId,
       playerId: playerId,
     });
+    history.push("/room");
   };
 
   const onNameEntered = (name) => {

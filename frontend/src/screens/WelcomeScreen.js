@@ -7,7 +7,6 @@ import TextField from "@material-ui/core/TextField";
 
 const WelcomeScreen = () => {
   const context = useContext(MyContext);
-  console.log(context.state.phase);
   const [roomToJoin, setRoom] = useState("");
 
   const onChange = (event) => {
