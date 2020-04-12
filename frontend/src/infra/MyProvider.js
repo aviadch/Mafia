@@ -9,6 +9,7 @@ import {
 import Shortid from "shortid";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
+import { useHistory } from "react-router-dom";
 const socket = socketIOClient(SERVER_ADDRESS + ":" + SOCKET_PORT);
 
 const MyProvider = (props) => {
@@ -22,7 +23,7 @@ const MyProvider = (props) => {
     joinDate: "",
     roomCreationDate: "",
   });
-
+  let history = useHistory();
   socket.on("NewPlayer", (data) => {
     console.log("New Player from socket");
     setState({ ...state, playerList: data.roomPlayers });
@@ -30,6 +31,7 @@ const MyProvider = (props) => {
 
   const onNewGame = () => {
     console.log("OnNewGame Pressed");
+
     const playerId = Shortid.generate();
 
     const req = { creatorID: playerId };
@@ -45,7 +47,9 @@ const MyProvider = (props) => {
           currentRoom: roomID,
           roomCreationDate: creationDate,
         });
+
         console.log(state);
+        history.push("/room");
       });
 
     console.log(state);
