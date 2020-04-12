@@ -34,7 +34,7 @@ class WaitingRoom extends Component {
                 )}
 
                 <Button variant="contained" color="primary">
-                  Start the game
+                  Start
                 </Button>
                 <h2>game id</h2>
 
