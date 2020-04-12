@@ -13,35 +13,31 @@ class MyProvider extends Component {
     playerId: "",
     playerList: [],
     joinDate: "",
-    roomCreationDate: ""
+    roomCreationDate: "",
   };
 
   onNewGame = () => {
     const playerId = Shortid.generate();
     this.setState({
       phase: PHASE.WAITING_ROOM,
-      playerId: playerId
+      playerId: playerId,
     });
     const req = { creatorID: playerId };
-    axios.post(SERVER_ADDRESS + "/room/create", req).then(res => {
+    axios.post(`${SERVER_ADDRESS}/room/create`, req).then((res) => {
       const { roomID, a, creationDate } = res.data;
       this.setState({
         currentRoom: roomID,
-        roomCreationDate: creationDate
+        roomCreationDate: creationDate,
       });
     });
   };
 
-  onNameEntered = name => {
+  onNameEntered = (name) => {
     axios
       .get(
-        SERVER_ADDRESS +
-          "/room/join?userID=" +
-          this.state.playerId +
-          "&roomID=" +
-          this.state.currentRoom
+        `${SERVER_ADDRESS}/room/join?userID=${this.state.playerId}&roomID=${this.state.currentRoom}`
       )
-      .then(res => {
+      .then((res) => {
         const { joinDate, roomPlayers, error, errorMessage } = res.data;
         if (error) {
           console.log(errorMessage);
@@ -50,15 +46,15 @@ class MyProvider extends Component {
             isUserEntered: true,
             playerName: name,
             joinDate: joinDate,
-            playerList: [...roomPlayers]
+            playerList: [...roomPlayers],
           });
         }
       });
   };
 
-  setName = name => {
+  setName = (name) => {
     this.setState({
-      playerName: name
+      playerName: name,
     });
   };
 
@@ -69,7 +65,7 @@ class MyProvider extends Component {
           state: this.state,
           onNewGame: this.onNewGame,
           onNameEntered: this.onNameEntered,
-          setName: this.setName
+          setName: this.setName,
         }}
       >
         {this.props.children}
