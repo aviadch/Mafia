@@ -1,24 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
 import Player from "./Player";
 import { MyContext } from "../infra/MyContext.js";
 
-class WaitingPlayers extends Component {
-  render() {
-    return (
-      <MyContext.Consumer>
-        {context => {
-          return (
-            <span className="waiting-players">
-              <h1>Waiting Players</h1>
-              {context.state.playerList.map(player => (
-                <Player name={player["name"]} key={player["id"]} />
-              ))}
-            </span>
-          );
-        }}
-      </MyContext.Consumer>
-    );
-  }
-}
+const WaitingPlayers = () => {
+  return (
+    <MyContext.Consumer>
+      {(context) => {
+        return (
+          <span className="waiting-players">
+            <h1>Waiting Players</h1>
+            {context.state.playerList.map((player) => (
+              <Player name={player["name"]} key={player["id"]} />
+            ))}
+          </span>
+        );
+      }}
+    </MyContext.Consumer>
+  );
+};
 
 export default WaitingPlayers;
