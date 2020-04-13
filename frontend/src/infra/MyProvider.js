@@ -55,7 +55,7 @@ const MyProvider = (props) => {
       playerId: playerId,
     });
   };
-  const onNameEntered = (name) => {
+  const onNameSet = (name) => {
     axios
       .get(
         `${SERVER_ADDRESS}:${SERVER_PORT}/room/join?userID=${state.playerId}&roomID=${state.currentRoom}&playerName=${name}`
@@ -100,7 +100,7 @@ const MyProvider = (props) => {
         value={{
           state: state,
           onNewRoom: onNewRoom,
-          onNameEntered: onNameEntered,
+          onNameSet: onNameSet,
           joinRoom: joinRoom,
           setName: setName,
         }}

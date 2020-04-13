@@ -21,7 +21,7 @@ const InputName = () => {
         variant="contained"
         color="primary"
         onClick={() => {
-          return context.onNameEntered(name);
+          return context.onNameSet(name);
         }}
       >
         Submit
