@@ -27,7 +27,7 @@ const MafiaApp = () => {
   };
 
   let screen = screenChooser(context.state.phase);
-  return <div className="MafiaApp">{screen}</div>;
+  return <>{screen}</>;
 };
 
 export default MafiaApp;
