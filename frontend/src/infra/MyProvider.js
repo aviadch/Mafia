@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import { MyContext } from "./MyContext";
-import {
-  PHASE,
-  SERVER_ADDRESS,
-  SOCKET_PORT,
-  SERVER_PORT,
-} from "../shared_code/consts";
+import { PHASE, SERVER_ADDRESS, SERVER_PORT } from "../shared_code/consts";
 import Shortid from "shortid";
 import axios from "axios";
-import socketIOClient from "socket.io-client";
-const socket = socketIOClient(SERVER_ADDRESS + ":" + SOCKET_PORT);
+import { createSocketAndListen } from "./socketUtils.js";
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
@@ -36,9 +30,14 @@ const MyProvider = (props) => {
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/room/create`, req)
       .then((res) => {
-        const { roomID, ...creationDate } = res.data;
+        const { roomID, ...creationDate, socketPort } = res.data;
         console.log(`roomID:${roomID}`);
-        setState({
+        createSocketAndListen(socketPort, "NewPlayer", (data) => {
+          setState({
+            ...state,
+            playerList: data.roomPlayers,
+          });
+        });setState({
           ...state,
           phase: PHASE.WAITING_ROOM,
           playerId: playerId,
@@ -66,7 +65,18 @@ const MyProvider = (props) => {
         `${SERVER_ADDRESS}:${SERVER_PORT}/room/join?userID=${state.playerId}&roomID=${state.currentRoom}&playerName=${name}`
       )
       .then((res) => {
-        const { joinDate, roomPlayers, error, errorMessage } = res.data;
+        const {
+          joinDate,
+          roomPlayers,
+          error,
+          errorMessage,
+          socketPort,
+        } = res.data;
+        createSocketAndListen(socketPort, "NewPlayer", (data) => {
+          this.setState({
+            playerList: data.roomPlayers,
+          });
+        });
         if (error) {
           console.log(errorMessage);
         } else {
