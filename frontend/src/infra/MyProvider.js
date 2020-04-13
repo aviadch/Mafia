@@ -4,7 +4,7 @@ import {
   PHASE,
   SERVER_ADDRESS,
   SOCKET_PORT,
-  SERVER_PORT
+  SERVER_PORT,
 } from "../shared_code/consts";
 import Shortid from "shortid";
 import axios from "axios";
@@ -14,9 +14,9 @@ const socket = socketIOClient(SERVER_ADDRESS + ":" + SOCKET_PORT);
 class MyProvider extends Component {
   constructor() {
     super();
-    socket.on("NewPlayer", data => {
+    socket.on("NewPlayer", (data) => {
       this.setState({
-        playerList: data.roomPlayers
+        playerList: data.roomPlayers,
       });
     });
   }
@@ -29,50 +29,41 @@ class MyProvider extends Component {
     playerId: "",
     playerList: [],
     joinDate: "",
-    roomCreationDate: ""
+    roomCreationDate: "",
   };
 
   onNewGame = () => {
     const playerId = Shortid.generate();
     this.setState({
       phase: PHASE.WAITING_ROOM,
-      playerId: playerId
+      playerId: playerId,
     });
     const req = { creatorID: playerId };
     axios
-      .post(SERVER_ADDRESS + ":" + SERVER_PORT + "/room/create", req)
-      .then(res => {
+      .post(`${SERVER_ADDRESS}:${SERVER_PORT}/room/create`, req)
+      .then((res) => {
         const { roomID, a, creationDate } = res.data;
         this.setState({
           currentRoom: roomID,
-          roomCreationDate: creationDate
+          roomCreationDate: creationDate,
         });
       });
   };
-
-  joinGame = roomId => {
+  joinGame = (roomId) => {
     const playerId = Shortid.generate();
     this.setState({
       phase: PHASE.WAITING_ROOM,
       currentRoom: roomId,
-      playerId: playerId
+      playerId: playerId,
     });
   };
 
-  onNameEntered = name => {
+  onNameEntered = (name) => {
     axios
       .get(
-        SERVER_ADDRESS +
-          ":" +
-          SERVER_PORT +
-          "/room/join?userID=" +
-          this.state.playerId +
-          "&roomID=" +
-          this.state.currentRoom +
-          "&playerName=" +
-          name
+        `${SERVER_ADDRESS}:${SERVER_PORT}/room/join?userID=${this.state.playerId}&roomID=${this.state.currentRoom}`
       )
-      .then(res => {
+      .then((res) => {
         const { joinDate, roomPlayers, error, errorMessage } = res.data;
         if (error) {
           console.log(errorMessage);
@@ -81,15 +72,15 @@ class MyProvider extends Component {
             isUserEnteredName: true,
             playerName: name,
             joinDate: joinDate,
-            playerList: [...roomPlayers]
+            playerList: [...roomPlayers],
           });
         }
       });
   };
 
-  setName = name => {
+  setName = (name) => {
     this.setState({
-      playerName: name
+      playerName: name,
     });
   };
 
@@ -101,7 +92,7 @@ class MyProvider extends Component {
           onNewGame: this.onNewGame,
           onNameEntered: this.onNameEntered,
           joinGame: this.joinGame,
-          setName: this.setName
+          setName: this.setName,
         }}
       >
         {this.props.children}

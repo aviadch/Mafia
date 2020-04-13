@@ -11,7 +11,6 @@ let roomPlayers = [];
 roomRouter.use((req, res, next) => {
   res.date = Date.now();
   console.log("Time: ", Date.now());
-
   next();
 });
 
