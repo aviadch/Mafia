@@ -17,8 +17,8 @@ const MyProvider = (props) => {
     roomCreationDate: "",
   });
 
-  const onNewGame = () => {
-    console.log("OnNewGame Pressed");
+  const onNewRoom = () => {
+    console.log("onNewRoom Pressed");
     const playerId = Shortid.generate();
     const req = { creatorID: playerId };
 
@@ -99,7 +99,7 @@ const MyProvider = (props) => {
       <MyContext.Provider
         value={{
           state: state,
-          onNewGame: onNewGame,
+          onNewRoom: onNewRoom,
           onNameEntered: onNameEntered,
           joinGame: joinGame,
           setName: setName,

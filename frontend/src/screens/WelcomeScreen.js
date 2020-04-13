@@ -24,7 +24,7 @@ const WelcomeScreen = () => {
       <div className="buttonContainer">
         <div>
           <Button
-            onClick={context.onNewGame}
+            onClick={context.onNewRoom}
             variant="contained"
             color="primary"
           >
