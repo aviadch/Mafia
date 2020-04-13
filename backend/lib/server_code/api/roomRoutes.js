@@ -27,7 +27,7 @@ roomRouter.get("/join", (req, res) => {
   if (Number(roomID) === 1 && roomCreated) {
     roomPlayers.push(playerToAdd);
     socket.emit("NewPlayer", {
-      message: "new player has joing the room",
+      message: "A new user has joined the room",
       roomPlayers,
     });
     res.send({ joinDate: res.date, roomPlayers });
