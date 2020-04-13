@@ -1,24 +1,13 @@
 import React, { Component } from "react";
 import { MyContext } from "./MyContext";
-import {
-  PHASE,
-  SERVER_ADDRESS,
-  SOCKET_PORT,
-  SERVER_PORT,
-} from "../shared_code/consts";
+import { PHASE, SERVER_ADDRESS, SERVER_PORT } from "../shared_code/consts";
 import Shortid from "shortid";
 import axios from "axios";
-import socketIOClient from "socket.io-client";
-const socket = socketIOClient(SERVER_ADDRESS + ":" + SOCKET_PORT);
+import { createSocketAndListen } from "./socketUtils.js";
 
 class MyProvider extends Component {
   constructor() {
     super();
-    socket.on("NewPlayer", (data) => {
-      this.setState({
-        playerList: data.roomPlayers,
-      });
-    });
   }
 
   state = {
@@ -42,7 +31,13 @@ class MyProvider extends Component {
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/room/create`, req)
       .then((res) => {
-        const { roomID, a, creationDate } = res.data;
+        console.log(res.data);
+        const { roomID, a, creationDate, socketPort } = res.data;
+        createSocketAndListen(socketPort, "NewPlayer", (data) => {
+          this.setState({
+            playerList: data.roomPlayers,
+          });
+        });
         this.setState({
           currentRoom: roomID,
           roomCreationDate: creationDate,
@@ -64,7 +59,18 @@ class MyProvider extends Component {
         `${SERVER_ADDRESS}:${SERVER_PORT}/room/join?userID=${this.state.playerId}&roomID=${this.state.currentRoom}`
       )
       .then((res) => {
-        const { joinDate, roomPlayers, error, errorMessage } = res.data;
+        const {
+          joinDate,
+          roomPlayers,
+          error,
+          errorMessage,
+          socketPort,
+        } = res.data;
+        createSocketAndListen(socketPort, "NewPlayer", (data) => {
+          this.setState({
+            playerList: data.roomPlayers,
+          });
+        });
         if (error) {
           console.log(errorMessage);
         } else {
