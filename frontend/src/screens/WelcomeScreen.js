@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import "./WelcomeScreen.css";
-import { MyContext } from "./MyContext";
+import { MyContext } from "../infra/MyContext";
 
 class WelcomeScreen extends Component {
   render() {

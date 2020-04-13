@@ -1,8 +1,10 @@
 // import express (after npm install express)
 const express = require("express");
+const bodyParser = require("body-parser");
 
 // create new express app and save it as "app"
 const app = express();
+app.use(bodyParser.json());
 
 // server configuration
 const PORT = 8080;
