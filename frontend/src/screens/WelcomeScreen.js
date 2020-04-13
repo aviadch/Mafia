@@ -8,11 +8,11 @@ import TextField from "@material-ui/core/TextField";
 const WelcomeScreen = () => {
   const context = useContext(MyContext);
   console.log(context.state.phase);
-  const [roomToJoin, setRoom] = useState("");
+  const [roomIDToJoin, setRoom] = useState("");
 
   const onRoomInputChange = (event) => {
     setRoom(event.target.value);
-    console.log(roomToJoin);
+    console.log(roomIDToJoin);
   };
 
   return (
@@ -38,7 +38,7 @@ const WelcomeScreen = () => {
             label="RoomId"
           />
           <Button
-            onClick={() => context.joinGame(roomToJoin)}
+            onClick={() => context.joinGame(roomIDToJoin)}
             variant="contained"
             color="primary"
           >
