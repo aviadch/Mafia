@@ -1,11 +1,16 @@
 const express = require("express");
-const { socket } = require("./socket.js");
+const { createNewSocket } = require("./socket.js");
+
+const socketsCollection = {};
 
 let roomRouter = express.Router();
 
 // Mockups
 let roomCreated = false;
 let roomPlayers = [];
+const roomIDCreator = () => {
+  return "1";
+};
 
 // middleware that is specific to this router
 roomRouter.use((req, res, next) => {
