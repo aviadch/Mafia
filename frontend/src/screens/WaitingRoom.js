@@ -14,7 +14,7 @@ const WaitingRoom = () => {
         <Typography variant="h1" component="h2" gutterBottom>
           Waiting Room - RoomId: {context.state.currentRoom}
         </Typography>
-        {!context.state.isUserEnteredName ? <InputName /> : null}
+        {!context.state.isUserEnteredName && <InputName />}
 
         <Button variant="contained" color="primary">
           Start the game
