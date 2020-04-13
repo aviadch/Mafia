@@ -10,9 +10,8 @@ const WelcomeScreen = () => {
   console.log(context.state.phase);
   const [roomToJoin, setRoom] = useState("");
 
-  const onChange = (event) => {
-    const value = event.target.value;
-    setRoom(value);
+  const onRoomInputChange = (event) => {
+    setRoom(event.target.value);
     console.log(roomToJoin);
   };
 
@@ -33,7 +32,11 @@ const WelcomeScreen = () => {
           </Button>
         </div>
         <div>
-          <TextField onChange={onChange} id="standard-basic" label="RoomId" />
+          <TextField
+            onChange={onRoomInputChange}
+            id="standard-basic"
+            label="RoomId"
+          />
           <Button
             onClick={() => context.joinGame(roomToJoin)}
             variant="contained"
