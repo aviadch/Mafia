@@ -8,14 +8,15 @@ const createNewSocket = async () => {
   const socket = socketIo(server);
   let socketPort = null;
 
-  const waitingForSocketSetUp = new Promise((resolve, reject) => {
+  const socketSetUp = new Promise((resolve) => {
     server.listen(0, () => {
       socketPort = server.address().port;
       console.log(`Socket Listening on port ${socketPort}`);
       resolve([socket, socketPort]);
     });
   });
-  return await waitingForSocketSetUp;
+
+  return await socketSetUp;
 };
 //const SOCKET_PORT = process.env.PORT || 4001;
 
