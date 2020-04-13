@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { MyContext } from "../infra/MyContext.js";
-const EnterName = () => {
+const InputName = () => {
   const context = useContext(MyContext);
   const [name, setName] = useState("");
 
@@ -30,4 +30,4 @@ const EnterName = () => {
   );
 };
 
-export default EnterName;
+export default InputName;

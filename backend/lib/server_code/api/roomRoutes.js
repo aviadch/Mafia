@@ -11,13 +11,11 @@ let roomPlayers = [];
 roomRouter.use((req, res, next) => {
   res.date = Date.now();
   console.log("Time: ", Date.now());
-
   next();
 });
 
 roomRouter.post("/create", (req, res) => {
   const { creatorID } = req.body;
-  //roomPlayers.push(creatorID);
   roomCreated = true;
   res.send({ roomID: 1, creatorID, creationDate: res.date });
 });
@@ -25,12 +23,12 @@ roomRouter.post("/create", (req, res) => {
 roomRouter.get("/join", (req, res) => {
   const { userID, roomID, playerName } = req.query;
   const playerToAdd = { id: userID, name: playerName };
-  console.log("roomID:", roomID);
+  console.log(`roomID:${roomID}`);
   if (Number(roomID) === 1 && roomCreated) {
     roomPlayers.push(playerToAdd);
     socket.emit("NewPlayer", {
-      message: "new player has joing the room",
-      roomPlayers
+      message: "A new user has joined the room",
+      roomPlayers,
     });
     res.send({ joinDate: res.date, roomPlayers });
   } else {

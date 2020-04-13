@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Typography from "@material-ui/core/Typography";
-import EnterName from "../components/EnterName";
+import InputName from "../components/InputName";
 import WaitingPlayers from "../components/WaitingPlayers";
 import Button from "@material-ui/core/Button";
 import { MyContext } from "../infra/MyContext.js";

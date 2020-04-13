@@ -31,10 +31,10 @@ const MyProvider = (props) => {
   const onNewGame = () => {
     console.log("OnNewGame Pressed");
     const playerId = Shortid.generate();
-
     const req = { creatorID: playerId };
+
     axios
-      .post(SERVER_ADDRESS + ":" + SERVER_PORT + "/room/create", req)
+      .post(`${SERVER_ADDRESS}:${SERVER_PORT}/room/create`, req)
       .then((res) => {
         const { roomID, ...creationDate } = res.data;
         console.log(`roomID:${roomID}`);
@@ -60,19 +60,10 @@ const MyProvider = (props) => {
       playerId: playerId,
     });
   };
-
   const onNameEntered = (name) => {
     axios
       .get(
-        SERVER_ADDRESS +
-          ":" +
-          SERVER_PORT +
-          "/room/join?userID=" +
-          state.playerId +
-          "&roomID=" +
-          state.currentRoom +
-          "&playerName=" +
-          name
+        `${SERVER_ADDRESS}:${SERVER_PORT}/room/join?userID=${state.playerId}&roomID=${state.currentRoom}&playerName=${name}`
       )
       .then((res) => {
         const { joinDate, roomPlayers, error, errorMessage } = res.data;
