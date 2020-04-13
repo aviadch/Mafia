@@ -16,7 +16,6 @@ roomRouter.use((req, res, next) => {
 
 roomRouter.post("/create", (req, res) => {
   const { creatorID } = req.body;
-  //roomPlayers.push(creatorID);
   roomCreated = true;
   res.send({ roomID: 1, creatorID, creationDate: res.date });
 });
@@ -29,7 +28,7 @@ roomRouter.get("/join", (req, res) => {
     roomPlayers.push(playerToAdd);
     socket.emit("NewPlayer", {
       message: "new player has joing the room",
-      roomPlayers
+      roomPlayers,
     });
     res.send({ joinDate: res.date, roomPlayers });
   } else {
