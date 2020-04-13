@@ -38,7 +38,7 @@ const WelcomeScreen = () => {
             label="RoomId"
           />
           <Button
-            onClick={() => context.joinGame(roomIDToJoin)}
+            onClick={() => context.joinRoom(roomIDToJoin)}
             variant="contained"
             color="primary"
           >

@@ -46,7 +46,7 @@ const MyProvider = (props) => {
     console.log(state);
   };
 
-  const joinGame = (roomId) => {
+  const joinRoom = (roomId) => {
     const playerId = Shortid.generate();
     setState({
       ...state,
@@ -101,7 +101,7 @@ const MyProvider = (props) => {
           state: state,
           onNewRoom: onNewRoom,
           onNameEntered: onNameEntered,
-          joinGame: joinGame,
+          joinRoom: joinRoom,
           setName: setName,
         }}
       >
