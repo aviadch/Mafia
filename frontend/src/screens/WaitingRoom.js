@@ -10,19 +10,17 @@ const WaitingRoom = () => {
 
   return (
     <div className="waiting-room">
-      <div>
-        <Typography variant="h1" component="h2" gutterBottom>
-          Waiting Room - RoomId: {context.state.currentRoom}
-        </Typography>
-        {!context.state.isUserEnteredName && <InputName />}
+      <Typography variant="h1" component="h2" gutterBottom>
+        Waiting Room - RoomId: {context.state.currentRoom}
+      </Typography>
+      {!context.state.isUserEnteredName && <InputName />}
 
-        <Button variant="contained" color="primary">
-          Start the game
-        </Button>
-        <h2>game id</h2>
+      <Button variant="contained" color="primary">
+        Start the game
+      </Button>
+      <h2>game id</h2>
 
-        <WaitingPlayers />
-      </div>
+      <WaitingPlayers />
     </div>
   );
 };
