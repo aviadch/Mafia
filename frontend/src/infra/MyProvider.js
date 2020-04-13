@@ -17,11 +17,6 @@ const MyProvider = (props) => {
     roomCreationDate: "",
   });
 
-  socket.on("NewPlayer", (data) => {
-    console.log("New Player from socket");
-    setState({ ...state, playerList: data.roomPlayers });
-  });
-
   const onNewGame = () => {
     console.log("OnNewGame Pressed");
     const playerId = Shortid.generate();
@@ -30,14 +25,15 @@ const MyProvider = (props) => {
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/room/create`, req)
       .then((res) => {
-        const { roomID, ...creationDate, socketPort } = res.data;
+        const { roomID, creationDate, socketPort } = res.data;
         console.log(`roomID:${roomID}`);
         createSocketAndListen(socketPort, "NewPlayer", (data) => {
           setState({
             ...state,
             playerList: data.roomPlayers,
           });
-        });setState({
+        });
+        setState({
           ...state,
           phase: PHASE.WAITING_ROOM,
           playerId: playerId,
