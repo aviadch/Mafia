@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { MyContext } from "../infra/MyContext.js";
-const InputName = () => {
-  const context = useContext(MyContext);
+
+const InputName = (props) => {
   const [name, setName] = useState("");
 
   const handleOnChange = (event) => {
@@ -14,13 +13,13 @@ const InputName = () => {
       <TextField
         onChange={handleOnChange}
         id="standard-basic"
-        label="Enter Your Name"
+        label={props.label}
       />
       <Button
         variant="contained"
         color="primary"
         onClick={() => {
-          return context.onPlayerRegisterToRoom(name);
+          return props.onSumbit(name);
         }}
       >
         Submit

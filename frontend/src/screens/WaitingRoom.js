@@ -12,7 +12,15 @@ const WaitingRoom = () => {
       <Typography variant="h1" component="h2" gutterBottom>
         Waiting Room - RoomId: {context.state.currentRoom}
       </Typography>
-      <> {!context.state.isUserEnteredName && <InputName />}</>
+      <>
+        {" "}
+        {!context.state.isUserEnteredName && (
+          <InputName
+            label="Enter Your Name"
+            onSubmit={context.onPlayerRegisterToRoom}
+          />
+        )}
+      </>
 
       <Button variant="contained" color="primary">
         Start the game
