@@ -3,13 +3,13 @@ import { BrowserRouter } from "react-router-dom";
 
 import MyProvider from "./infra/MyProvider.js";
 
-import MafiaApp from "./MafiaApp";
+import MafiaRoutes from "./MafiaRoutes";
 
 const App = () => {
   return (
     <BrowserRouter>
       <MyProvider>
-        <MafiaApp />
+        <MafiaRoutes />
       </MyProvider>
     </BrowserRouter>
   );

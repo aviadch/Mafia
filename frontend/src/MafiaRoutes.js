@@ -4,7 +4,7 @@ import WelcomeScreen from "./screens/WelcomeScreen";
 import WaitingRoom from "./screens/WaitingRoom";
 import { Switch, Route } from "react-router-dom";
 
-const MafiaApp = () => {
+const MafiaRoutes = () => {
   return (
     <div className="MafiaApp">
       <Switch>
@@ -15,4 +15,4 @@ const MafiaApp = () => {
   );
 };
 
-export default MafiaApp;
+export default MafiaRoutes;
