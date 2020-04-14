@@ -8,7 +8,7 @@ import {
 } from "../shared_code/consts";
 import Shortid from "shortid";
 import axios from "axios";
-import { createSocketAndListen } from "./socketUtils.js";
+import { createSocketAndListen as createRoomSocket } from "./socketUtils.js";
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
@@ -20,6 +20,8 @@ const MyProvider = (props) => {
     roomPlayersList: [],
     joinDate: "",
     roomCreationDate: "",
+    roomSocket: null,
+    roomSocketPort: null,
   });
 
   const onNewRoom = () => {
@@ -35,18 +37,24 @@ const MyProvider = (props) => {
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        const { roomID, creationDate, socketPort } = res.data;
+        console.log(res.data);
+        const { roomID, creationDate, socketPort: roomSocketPort } = res.data;
         console.log(`roomID:${roomID}`);
-        createSocketAndListen(socketPort, "NewPlayer", (data) => {
-          setState({
-            ...state,
-            phase: PHASE.WAITING_ROOM,
-            roomPlayersList: data.roomPlayers,
-          });
-        });
-
+        const roomSocket = createRoomSocket(
+          roomSocketPort,
+          "NewPlayer",
+          (data) => {
+            setState({
+              ...state,
+              phase: PHASE.WAITING_ROOM,
+              roomPlayersList: data.roomPlayers,
+            });
+          }
+        );
         setState({
           ...state,
+          roomSocketPort,
+          roomSocket,
           phase: PHASE.WAITING_ROOM,
           playerId: playerId,
           currentRoom: roomID,
@@ -77,19 +85,25 @@ const MyProvider = (props) => {
     axios
       .get(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/join`, joinReqParams)
       .then((res) => {
+        console.log(res.data);
         const {
           joinDate,
           roomPlayers,
           error,
           errorMessage,
-          socketPort,
+          socketPort: roomSocketPort,
         } = res.data;
-        createSocketAndListen(socketPort, "NewPlayer", (data) => {
-          setState({
-            ...state,
-            roomPlayersList: data.roomPlayers,
+        let roomSocket = null;
+        console.log(this.state.roomSocketPort, this.state.roomSocket);
+        if (!this.state.roomSocketPort) {
+          console.log(`create new socket`);
+          roomSocket = createRoomSocket(roomSocketPort, "NewPlayer", (data) => {
+            setState({
+              ...state,
+              roomPlayersList: data.roomPlayers,
+            });
           });
-        });
+        }
         if (error) {
           console.log(errorMessage);
         } else {
@@ -99,6 +113,8 @@ const MyProvider = (props) => {
             playerName: name,
             joinDate: joinDate,
             roomPlayersList: [...roomPlayers],
+            roomSocket,
+            roomSocketPort,
           });
         }
       });
