@@ -18,16 +18,5 @@ const createNewSocket = async () => {
 
   return await socketSetUp;
 };
-//const SOCKET_PORT = process.env.PORT || 4001;
-
-/*socket.on("connection", (socket) => {
-  console.log("New client connected");
-  socket.on("event", (data) => {
-    console.log("hey sap ", data);
-  });
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
-});*/
 
 module.exports = { createNewSocket };
