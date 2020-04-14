@@ -21,7 +21,7 @@ class MyProvider extends Component {
     isUserEnteredName: false,
     playerName: "",
     playerId: "",
-    playerList: [],
+    roomPlayersList: [],
     joinDate: "",
     roomCreationDate: "",
   };
@@ -40,7 +40,7 @@ class MyProvider extends Component {
         const { roomID, a, creationDate, socketPort } = res.data;
         createSocketAndListen(socketPort, "NewPlayer", (data) => {
           this.setState({
-            playerList: data.roomPlayers,
+            roomPlayersList: data.roomPlayers,
           });
         });
         this.setState({
@@ -73,7 +73,7 @@ class MyProvider extends Component {
         } = res.data;
         createSocketAndListen(socketPort, "NewPlayer", (data) => {
           this.setState({
-            playerList: data.roomPlayers,
+            roomPlayersList: data.roomPlayers,
           });
         });
         if (error) {
@@ -83,7 +83,7 @@ class MyProvider extends Component {
             isUserEnteredName: true,
             playerName: name,
             joinDate: joinDate,
-            playerList: [...roomPlayers],
+            roomPlayersList: [...roomPlayers],
           });
         }
       });
