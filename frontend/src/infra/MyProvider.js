@@ -24,6 +24,8 @@ class MyProvider extends Component {
     roomPlayersList: [],
     joinDate: "",
     roomCreationDate: "",
+    roomSocket: null,
+    roomSocketPort: null,
   };
 
   onNewGame = () => {
@@ -37,13 +39,24 @@ class MyProvider extends Component {
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/create`, req)
       .then((res) => {
         console.log(res.data);
-        const { roomID, a, creationDate, socketPort } = res.data;
-        createRoomSocket(socketPort, "NewPlayer", (data) => {
-          this.setState({
-            roomPlayersList: data.roomPlayers,
-          });
-        });
+        const {
+          roomID,
+          a,
+          creationDate,
+          socketPort: roomSocketPort,
+        } = res.data;
+        const roomSocket = createRoomSocket(
+          roomSocketPort,
+          "NewPlayer",
+          (data) => {
+            this.setState({
+              roomPlayersList: data.roomPlayers,
+            });
+          }
+        );
         this.setState({
+          roomSocketPort,
+          roomSocket,
           currentRoom: roomID,
           roomCreationDate: creationDate,
         });
@@ -68,18 +81,24 @@ class MyProvider extends Component {
     axios
       .get(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/join`, joinReqParams)
       .then((res) => {
+        console.log(res.data);
         const {
           joinDate,
           roomPlayers,
           error,
           errorMessage,
-          socketPort,
+          socketPort: roomSocketPort,
         } = res.data;
-        createRoomSocket(socketPort, "NewPlayer", (data) => {
-          this.setState({
-            roomPlayersList: data.roomPlayers,
+        let roomSocket = null;
+        console.log(this.state.roomSocketPort, this.state.roomSocket);
+        if (!this.state.roomSocketPort) {
+          console.log(`create new socket`);
+          roomSocket = createRoomSocket(roomSocketPort, "NewPlayer", (data) => {
+            this.setState({
+              roomPlayersList: data.roomPlayers,
+            });
           });
-        });
+        }
         if (error) {
           console.log(errorMessage);
         } else {
@@ -88,6 +107,8 @@ class MyProvider extends Component {
             playerName: name,
             joinDate: joinDate,
             roomPlayersList: [...roomPlayers],
+            roomSocket,
+            roomSocketPort,
           });
         }
       });
