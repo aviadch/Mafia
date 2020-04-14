@@ -23,8 +23,7 @@ const MyProvider = (props) => {
   let history = useHistory();
 
   const onNewRoom = () => {
-    console.log("onNewRoom Pressed");
-    history.push("/room");
+    history.push(ROOM_ROUTES);
     const playerId = Shortid.generate();
     setState({
       ...state,
@@ -68,7 +67,7 @@ const MyProvider = (props) => {
       currentRoom: roomId,
       playerId,
     });
-    history.push("/room");
+    history.push(ROOM_ROUTES);
   };
   const onPlayerRegisterToRoom = (name) => {
     const joinReqParams = {
