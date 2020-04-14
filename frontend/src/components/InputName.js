@@ -29,7 +29,7 @@ class InputName extends Component {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  return context.onNameEntered(this.state.name);
+                  return context.onPlayerRegisterToRoom(this.state.name);
                 }}
               >
                 Submit

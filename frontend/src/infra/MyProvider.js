@@ -58,7 +58,7 @@ class MyProvider extends Component {
     });
   };
 
-  onNameEntered = (name) => {
+  onPlayerRegisterToRoom = (name) => {
     const joinReqParams = {
       params: {
         userID: this.state.playerId,
@@ -105,7 +105,7 @@ class MyProvider extends Component {
         value={{
           state: this.state,
           onNewGame: this.onNewGame,
-          onNameEntered: this.onNameEntered,
+          onPlayerRegisterToRoom: this.onPlayerRegisterToRoom,
           joinGame: this.joinGame,
           setName: this.setName,
         }}
