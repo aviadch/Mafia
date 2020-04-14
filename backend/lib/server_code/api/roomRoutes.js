@@ -8,7 +8,7 @@ let roomRouter = express.Router();
 // Mockups
 let roomCreated = false;
 let roomPlayers = [];
-const roomIDCreator = () => {
+const roomIDGenerator = () => {
   return "1";
 };
 
@@ -21,7 +21,7 @@ roomRouter.use((req, res, next) => {
 
 roomRouter.post("/create", async (req, res) => {
   const { creatorID } = req.body;
-  const roomID = roomIDCreator();
+  const roomID = roomIDGenerator();
   roomCreated = true;
   let [socket, socketPort] = [null, null];
   try {
