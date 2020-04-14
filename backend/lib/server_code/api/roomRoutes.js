@@ -37,8 +37,6 @@ roomRouter.post("/create", async (req, res) => {
   } catch (e) {
     console.log(`An error occured while getting socket: ${e}`);
   }
-
-  console.log("here!");
 });
 
 roomRouter.get("/join", (req, res) => {
