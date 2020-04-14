@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MyContext } from "./MyContext";
 import { PHASE, SERVER_ADDRESS, SERVER_PORT } from "../shared_code/consts";
 import Shortid from "shortid";
@@ -30,9 +30,11 @@ const MyProvider = (props) => {
         createSocketAndListen(socketPort, "NewPlayer", (data) => {
           setState({
             ...state,
+            phase: PHASE.WAITING_ROOM,
             playerList: data.roomPlayers,
           });
         });
+
         setState({
           ...state,
           phase: PHASE.WAITING_ROOM,
@@ -40,7 +42,6 @@ const MyProvider = (props) => {
           currentRoom: roomID,
           roomCreationDate: creationDate,
         });
-        console.log(state);
       });
 
     console.log(state);
@@ -48,6 +49,7 @@ const MyProvider = (props) => {
 
   const joinRoom = (roomId) => {
     const playerId = Shortid.generate();
+
     setState({
       ...state,
       phase: PHASE.WAITING_ROOM,
