@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MyContext } from "./MyContext";
 import {
   SERVER_ADDRESS,
-  SOCKET_PORT,
   SERVER_PORT,
+  ROOM_ROUTES,
 } from "../shared_code/consts";
 import Shortid from "shortid";
 import axios from "axios";
-import socketIOClient from "socket.io-client";
 import { useHistory } from "react-router-dom";
-const socket = socketIOClient(SERVER_ADDRESS + ":" + SOCKET_PORT);
+import { createSocketAndListen } from "./socketUtils.js";
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
@@ -17,27 +16,34 @@ const MyProvider = (props) => {
     isUserEnteredName: false,
     playerName: "",
     playerId: "",
-    playerList: [],
+    roomPlayersList: [],
     joinDate: "",
     roomCreationDate: "",
   });
   let history = useHistory();
-  socket.on("NewPlayer", (data) => {
-    console.log("New Player from socket");
-    setState({ ...state, playerList: data.roomPlayers });
-  });
-
-  const onNewGame = () => {
-    console.log("OnNewGame Pressed");
-
+  const onNewRoom = () => {
+    console.log("onNewRoom Pressed");
     const playerId = Shortid.generate();
-
+    setState({
+      ...state,
+      phase: PHASE.WAITING_ROOM,
+      playerId,
+    });
     const req = { creatorID: playerId };
+
     axios
-      .post(SERVER_ADDRESS + ":" + SERVER_PORT + "/room/create", req)
+      .post(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        const { roomID, ...creationDate } = res.data;
+        const { roomID, creationDate, socketPort } = res.data;
         console.log(`roomID:${roomID}`);
+        createSocketAndListen(socketPort, "NewPlayer", (data) => {
+          setState({
+            ...state,
+            phase: PHASE.WAITING_ROOM,
+            roomPlayersList: data.roomPlayers,
+          });
+        });
+
         setState({
           ...state,
           playerId: playerId,
@@ -54,31 +60,39 @@ const MyProvider = (props) => {
     console.log(state);
   };
 
-  const joinGame = (roomId) => {
+  const joinRoom = (roomId) => {
     const playerId = Shortid.generate();
+
     setState({
       ...state,
       currentRoom: roomId,
-      playerId: playerId,
+      playerId,
     });
     history.push("/room");
   };
-
-  const onNameEntered = (name) => {
+  const onPlayerRegisterToRoom = (name) => {
+    const joinReqParams = {
+      params: {
+        userID: state.playerId,
+        roomID: state.currentRoom,
+      },
+    };
     axios
-      .get(
-        SERVER_ADDRESS +
-          ":" +
-          SERVER_PORT +
-          "/room/join?userID=" +
-          state.playerId +
-          "&roomID=" +
-          state.currentRoom +
-          "&playerName=" +
-          name
-      )
+      .get(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/join`, joinReqParams)
       .then((res) => {
-        const { joinDate, roomPlayers, error, errorMessage } = res.data;
+        const {
+          joinDate,
+          roomPlayers,
+          error,
+          errorMessage,
+          socketPort,
+        } = res.data;
+        createSocketAndListen(socketPort, "NewPlayer", (data) => {
+          setState({
+            ...state,
+            roomPlayersList: data.roomPlayers,
+          });
+        });
         if (error) {
           console.log(errorMessage);
         } else {
@@ -87,7 +101,7 @@ const MyProvider = (props) => {
             isUserEnteredName: true,
             playerName: name,
             joinDate: joinDate,
-            playerList: [...roomPlayers],
+            roomPlayersList: [...roomPlayers],
           });
         }
       });
@@ -105,9 +119,9 @@ const MyProvider = (props) => {
       <MyContext.Provider
         value={{
           state: state,
-          onNewGame: onNewGame,
-          onNameEntered: onNameEntered,
-          joinGame: joinGame,
+          onNewRoom: onNewRoom,
+          onPlayerRegisterToRoom: onPlayerRegisterToRoom,
+          joinRoom: joinRoom,
           setName: setName,
         }}
       >

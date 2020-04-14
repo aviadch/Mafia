@@ -7,12 +7,12 @@ import TextField from "@material-ui/core/TextField";
 
 const WelcomeScreen = () => {
   const context = useContext(MyContext);
-  const [roomToJoin, setRoom] = useState("");
+  console.log(context.state.phase);
+  const [roomIDToJoin, setRoom] = useState("");
 
-  const onChange = (event) => {
-    const value = event.target.value;
-    setRoom(value);
-    console.log(roomToJoin);
+  const onRoomInputChange = (event) => {
+    setRoom(event.target.value);
+    console.log(roomIDToJoin);
   };
 
   return (
@@ -24,7 +24,7 @@ const WelcomeScreen = () => {
       <div className="buttonContainer">
         <div>
           <Button
-            onClick={context.onNewGame}
+            onClick={context.onNewRoom}
             variant="contained"
             color="primary"
           >
@@ -32,9 +32,13 @@ const WelcomeScreen = () => {
           </Button>
         </div>
         <div>
-          <TextField onChange={onChange} id="standard-basic" label="RoomId" />
+          <TextField
+            onChange={onRoomInputChange}
+            id="standard-basic"
+            label="RoomId"
+          />
           <Button
-            onClick={() => context.joinGame(roomToJoin)}
+            onClick={() => context.joinRoom(roomIDToJoin)}
             variant="contained"
             color="primary"
           >
