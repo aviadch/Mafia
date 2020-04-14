@@ -1,7 +1,7 @@
 const express = require("express");
 const { createNewSocket } = require("./socket.js");
 
-const socketsCollection = {};
+const roomSockets = {};
 
 let roomRouter = express.Router();
 
@@ -26,7 +26,7 @@ roomRouter.post("/create", async (req, res) => {
   try {
     const [socket, socketPort] = await createNewSocket();
     console.log(`socket port got from function:${socketPort}`);
-    socketsCollection[roomID] = [socket, socketPort];
+    roomSockets[roomID] = [socket, socketPort];
     res.send({
       roomID: roomID,
       creatorID,
@@ -44,7 +44,7 @@ roomRouter.get("/join", (req, res) => {
   console.log(`roomID:${roomID}`);
   if (Number(roomID) === 1 && roomCreated) {
     roomPlayers.push(playerToAdd);
-    const [roomSocket, roomSocketPort] = socketsCollection[roomID];
+    const [roomSocket, roomSocketPort] = roomSockets[roomID];
     roomSocket.emit("NewPlayer", {
       message: "A new user has joined the room",
       roomPlayers,
