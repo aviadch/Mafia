@@ -4,7 +4,6 @@ import InputName from "../components/InputName";
 import WaitingPlayers from "../components/WaitingPlayers";
 import Button from "@material-ui/core/Button";
 import { MyContext } from "../infra/MyContext.js";
-
 const WaitingRoom = () => {
   const context = useContext(MyContext);
 
@@ -13,7 +12,7 @@ const WaitingRoom = () => {
       <Typography variant="h1" component="h2" gutterBottom>
         Waiting Room - RoomId: {context.state.currentRoom}
       </Typography>
-      {!context.state.isUserEnteredName && <InputName />}
+      <> {!context.state.isUserEnteredName && <InputName />}</>
 
       <Button variant="contained" color="primary">
         Start the game

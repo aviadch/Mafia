@@ -9,9 +9,8 @@ const InputName = () => {
   const handleOnChange = (event) => {
     setName(event.target.value);
   };
-
   return (
-    <div className="Enter Name">
+    <div className="inputWrapper">
       <TextField
         onChange={handleOnChange}
         id="standard-basic"
@@ -21,7 +20,7 @@ const InputName = () => {
         variant="contained"
         color="primary"
         onClick={() => {
-          return context.onNameSet(name);
+          return context.onPlayerRegisterToRoom(name);
         }}
       >
         Submit
