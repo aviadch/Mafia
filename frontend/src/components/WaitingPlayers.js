@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Player from "./Player";
+import PlayerCard from "./PlayerCard";
 import { MyContext } from "../infra/MyContext.js";
 
 const WaitingPlayers = () => {
@@ -10,7 +10,7 @@ const WaitingPlayers = () => {
       <h1>Waiting Players</h1>
       {context.state.playerList.map((player) => {
         console.log(player);
-        return <Player name={player.name} key={player.id} />;
+        return <PlayerCard name={player.name} key={player.id} />;
       })}
     </span>
   );

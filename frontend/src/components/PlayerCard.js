@@ -1,6 +1,6 @@
 import React from "react";
 
-const Player = (props) => {
+const PlayerCard = (props) => {
   console.log(props.name);
   return (
     <span className="Player">
@@ -15,4 +15,4 @@ const Player = (props) => {
   );
 };
 
-export default Player;
+export default PlayerCard;
