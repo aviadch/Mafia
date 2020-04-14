@@ -94,12 +94,13 @@ const MyProvider = (props) => {
           socketPort: roomSocketPort,
         } = res.data;
         let roomSocket = null;
-        console.log(this.state.roomSocketPort, this.state.roomSocket);
-        if (!this.state.roomSocketPort) {
+        console.log(state.roomSocketPort, state.roomSocket);
+        if (!state.roomSocketPort) {
           console.log(`create new socket`);
           roomSocket = createRoomSocket(roomSocketPort, "NewPlayer", (data) => {
             setState({
               ...state,
+              phase: PHASE.WAITING_ROOM,
               roomPlayersList: data.roomPlayers,
             });
           });
