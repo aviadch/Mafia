@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { MyContext } from "./MyContext";
-import { PHASE, SERVER_ADDRESS, SERVER_PORT } from "../shared_code/consts";
+import {
+  PHASE,
+  SERVER_ADDRESS,
+  SERVER_PORT,
+  ROOM_ROUTES,
+} from "../shared_code/consts";
 import Shortid from "shortid";
 import axios from "axios";
 import { createSocketAndListen } from "./socketUtils.js";
@@ -29,7 +34,7 @@ class MyProvider extends Component {
     });
     const req = { creatorID: playerId };
     axios
-      .post(`${SERVER_ADDRESS}:${SERVER_PORT}/room/create`, req)
+      .post(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/create`, req)
       .then((res) => {
         console.log(res.data);
         const { roomID, a, creationDate, socketPort } = res.data;
@@ -56,7 +61,7 @@ class MyProvider extends Component {
   onNameEntered = (name) => {
     axios
       .get(
-        `${SERVER_ADDRESS}:${SERVER_PORT}/room/join?userID=${this.state.playerId}&roomID=${this.state.currentRoom}`
+        `${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/join?userID=${this.state.playerId}&roomID=${this.state.currentRoom}`
       )
       .then((res) => {
         const {
