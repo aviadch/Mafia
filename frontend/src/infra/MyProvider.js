@@ -91,7 +91,7 @@ const MyProvider = (props) => {
           roomPlayers,
           error,
           errorMessage,
-          socketPort: roomSocketPort,
+          roomSocketPort,
         } = res.data;
         let roomSocket = null;
         console.log(state.roomSocketPort, state.roomSocket);
