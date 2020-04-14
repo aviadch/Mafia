@@ -30,7 +30,7 @@ class MyProvider extends Component {
     const playerId = Shortid.generate();
     this.setState({
       phase: PHASE.WAITING_ROOM,
-      playerId: playerId,
+      playerId,
     });
     const req = { creatorID: playerId };
     axios
@@ -54,7 +54,7 @@ class MyProvider extends Component {
     this.setState({
       phase: PHASE.WAITING_ROOM,
       currentRoom: roomId,
-      playerId: playerId,
+      playerId,
     });
   };
 
