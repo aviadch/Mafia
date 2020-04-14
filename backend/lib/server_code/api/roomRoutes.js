@@ -23,9 +23,8 @@ roomRouter.post("/create", async (req, res) => {
   const { creatorID } = req.body;
   const roomID = roomIDGenerator();
   roomCreated = true;
-  let [socket, socketPort] = [null, null];
   try {
-    [socket, socketPort] = await createNewSocket();
+    const [socket, socketPort] = await createNewSocket();
     console.log(`socket port got from function:${socketPort}`);
     socketsCollection[roomID] = [socket, socketPort];
     res.send({
