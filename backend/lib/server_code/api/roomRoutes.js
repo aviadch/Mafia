@@ -1,5 +1,5 @@
 const express = require("express");
-const { createNewSocket } = require("./socket.js");
+const { createNewSocket: createNewRoomScoket } = require("./socket.js");
 
 const roomSockets = {};
 
@@ -24,7 +24,7 @@ roomRouter.post("/create", async (req, res) => {
   const roomID = roomIDGenerator();
   roomCreated = true;
   try {
-    const [socket, socketPort] = await createNewSocket();
+    const [socket, socketPort] = await createNewRoomScoket();
     console.log(`socket port got from function:${socketPort}`);
     roomSockets[roomID] = [socket, socketPort];
     res.send({
