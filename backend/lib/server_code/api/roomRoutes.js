@@ -28,7 +28,7 @@ roomRouter.post("/create", async (req, res) => {
     console.log(`socket port got from function:${socketPort}`);
     roomSockets[roomID] = [socket, socketPort];
     res.send({
-      roomID: roomID,
+      roomID,
       creatorID,
       creationDate: res.date,
       socketPort: socketPort,
