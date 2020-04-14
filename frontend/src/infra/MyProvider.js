@@ -8,7 +8,7 @@ import {
 } from "../shared_code/consts";
 import Shortid from "shortid";
 import axios from "axios";
-import { createSocketAndListen } from "./socketUtils.js";
+import { createSocketAndListen as createRoomSocket } from "./socketUtils.js";
 
 class MyProvider extends Component {
   constructor() {
@@ -38,7 +38,7 @@ class MyProvider extends Component {
       .then((res) => {
         console.log(res.data);
         const { roomID, a, creationDate, socketPort } = res.data;
-        createSocketAndListen(socketPort, "NewPlayer", (data) => {
+        createRoomSocket(socketPort, "NewPlayer", (data) => {
           this.setState({
             roomPlayersList: data.roomPlayers,
           });
@@ -75,7 +75,7 @@ class MyProvider extends Component {
           errorMessage,
           socketPort,
         } = res.data;
-        createSocketAndListen(socketPort, "NewPlayer", (data) => {
+        createRoomSocket(socketPort, "NewPlayer", (data) => {
           this.setState({
             roomPlayersList: data.roomPlayers,
           });
