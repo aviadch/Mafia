@@ -59,10 +59,14 @@ class MyProvider extends Component {
   };
 
   onNameEntered = (name) => {
+    const joinReqParams = {
+      params: {
+        userID: this.state.playerId,
+        roomID: this.state.currentRoom,
+      },
+    };
     axios
-      .get(
-        `${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/join?userID=${this.state.playerId}&roomID=${this.state.currentRoom}`
-      )
+      .get(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/join`, joinReqParams)
       .then((res) => {
         const {
           joinDate,
