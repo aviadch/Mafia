@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MyContext } from "./MyContext";
 import {
   SERVER_ADDRESS,
@@ -21,12 +21,13 @@ const MyProvider = (props) => {
     roomCreationDate: "",
   });
   let history = useHistory();
+
   const onNewRoom = () => {
     console.log("onNewRoom Pressed");
+    history.push("/room");
     const playerId = Shortid.generate();
     setState({
       ...state,
-      phase: PHASE.WAITING_ROOM,
       playerId,
     });
     const req = { creatorID: playerId };
@@ -39,7 +40,6 @@ const MyProvider = (props) => {
         createSocketAndListen(socketPort, "NewPlayer", (data) => {
           setState({
             ...state,
-            phase: PHASE.WAITING_ROOM,
             roomPlayersList: data.roomPlayers,
           });
         });
