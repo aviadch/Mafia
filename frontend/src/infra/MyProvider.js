@@ -87,7 +87,7 @@ class MyProvider extends Component {
           roomPlayers,
           error,
           errorMessage,
-          socketPort: roomSocketPort,
+          roomSocketPort,
         } = res.data;
         let roomSocket = null;
         console.log(this.state.roomSocketPort, this.state.roomSocket);
