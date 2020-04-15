@@ -128,6 +128,8 @@ const MyProvider = (props) => {
       <MyContext.Provider
         value={{
           state: state,
+          playerName,
+          playerId,
           currentRoomID,
           onRoomCreated: onRoomCreated,
           onPlayerRegisterToRoom: onPlayerRegisterToRoom,
