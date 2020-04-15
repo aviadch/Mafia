@@ -36,7 +36,7 @@ class MyProvider extends Component {
     });
     const req = { creatorID: playerId };
     axios
-      .post(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/create`, req)
+      .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
         console.log(res.data);
         const {
@@ -79,7 +79,10 @@ class MyProvider extends Component {
       },
     };
     axios
-      .get(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/join`, joinReqParams)
+      .get(
+        `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/join`,
+        joinReqParams
+      )
       .then((res) => {
         console.log(res.data);
         const {
