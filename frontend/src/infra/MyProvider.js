@@ -12,7 +12,6 @@ import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
-    currentRoomID: '',
     isUserEnteredName: false,
     roomPlayersList: [],
     joinDate: '',
