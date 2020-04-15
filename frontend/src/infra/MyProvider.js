@@ -28,7 +28,7 @@ class MyProvider extends Component {
     roomSocketPort: null,
   };
 
-  onNewGame = () => {
+  onRoomCreated = () => {
     const playerId = Shortid.generate();
     this.setState({
       phase: PHASE.WAITING_ROOM,
@@ -62,7 +62,7 @@ class MyProvider extends Component {
         });
       });
   };
-  joinGame = (roomId) => {
+  joinExistingRoom = (roomId) => {
     const playerId = Shortid.generate();
     this.setState({
       phase: PHASE.WAITING_ROOM,
@@ -132,9 +132,9 @@ class MyProvider extends Component {
       <MyContext.Provider
         value={{
           state: this.state,
-          onNewGame: this.onNewGame,
+          onRoomCreated: this.onRoomCreated,
           onPlayerRegisterToRoom: this.onPlayerRegisterToRoom,
-          joinGame: this.joinGame,
+          joinExistingRoom: this.joinExistingRoom,
           setName: this.setName,
         }}
       >
