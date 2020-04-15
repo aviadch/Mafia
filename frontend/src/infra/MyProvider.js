@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { MyContext } from "./MyContext";
+import React, { Component } from 'react';
+import { MyContext } from './MyContext';
 import {
   PHASE,
   SERVER_ADDRESS,
   SERVER_PORT,
   ROOM_ROUTES,
-} from "../shared_code/consts";
-import Shortid from "shortid";
-import axios from "axios";
-import { createSocketAndListen as createRoomSocket } from "./socketUtils.js";
+} from '../shared_code/consts';
+import Shortid from 'shortid';
+import axios from 'axios';
+import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 
 class MyProvider extends Component {
   constructor() {
@@ -17,13 +17,13 @@ class MyProvider extends Component {
 
   state = {
     phase: PHASE.WELCOME_SCREEN,
-    currentRoom: "",
+    currentRoom: '',
     isUserEnteredName: false,
-    playerName: "",
-    playerId: "",
+    playerName: '',
+    playerId: '',
     roomPlayersList: [],
-    joinDate: "",
-    roomCreationDate: "",
+    joinDate: '',
+    roomCreationDate: '',
     roomSocket: null,
     roomSocketPort: null,
   };
@@ -47,7 +47,7 @@ class MyProvider extends Component {
         } = res.data;
         const roomSocket = createRoomSocket(
           roomSocketPort,
-          "NewPlayer",
+          'PlayerJoinedRoom',
           (data) => {
             this.setState({
               roomPlayersList: data.roomPlayers,
@@ -93,11 +93,15 @@ class MyProvider extends Component {
         console.log(this.state.roomSocketPort, this.state.roomSocket);
         if (!this.state.roomSocketPort) {
           console.log(`create new socket`);
-          roomSocket = createRoomSocket(roomSocketPort, "NewPlayer", (data) => {
-            this.setState({
-              roomPlayersList: data.roomPlayers,
-            });
-          });
+          roomSocket = createRoomSocket(
+            roomSocketPort,
+            'PlayerJoinedRoom',
+            (data) => {
+              this.setState({
+                roomPlayersList: data.roomPlayers,
+              });
+            }
+          );
         }
         if (error) {
           console.log(errorMessage);
