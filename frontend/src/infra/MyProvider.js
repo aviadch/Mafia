@@ -22,6 +22,7 @@ const MyProvider = (props) => {
     roomSocket: null,
     roomSocketPort: null,
   });
+
   let history = useHistory();
 
   const onRoomCreated = () => {
@@ -41,19 +42,23 @@ const MyProvider = (props) => {
           roomSocketPort,
           'PlayerJoinedRoom',
           (data) => {
-            setState({
-              ...state,
-              roomPlayersList: data.roomPlayers,
+            setState((prevState) => {
+              return {
+                ...prevState,
+                roomPlayersList: data.roomPlayers,
+              };
             });
           }
         );
-        setState({
-          ...state,
-          roomSocketPort,
-          roomSocket,
-          playerId: playerId,
-          currentRoom: roomID,
-          roomCreationDate: creationDate,
+        setState((prevState) => {
+          return {
+            ...prevState,
+            roomSocketPort,
+            roomSocket,
+            playerId: playerId,
+            currentRoom: roomID,
+            roomCreationDate: creationDate,
+          };
         });
 
         console.log(state);
