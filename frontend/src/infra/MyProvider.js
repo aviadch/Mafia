@@ -14,8 +14,6 @@ const MyProvider = (props) => {
   const [state, setState] = useState({
     currentRoom: '',
     isUserEnteredName: false,
-    playerName: '',
-    playerId: '',
     roomPlayersList: [],
     joinDate: '',
     roomCreationDate: '',
@@ -23,15 +21,15 @@ const MyProvider = (props) => {
     roomSocketPort: null,
   });
 
+  const [playerName, setPlayerName] = useState('');
+  const [playerId, setPlayerId] = useState('');
+
   let history = useHistory();
 
   const onRoomCreated = () => {
     history.push(`/${ROOM_ROUTES}`);
-    const playerId = Shortid.generate();
-    setState({
-      ...state,
-      playerId,
-    });
+    setPlayerId(Shortid.generate());
+
     const req = { creatorID: playerId };
 
     axios
@@ -55,7 +53,6 @@ const MyProvider = (props) => {
             ...prevState,
             roomSocketPort,
             roomSocket,
-            playerId: playerId,
             currentRoom: roomID,
             roomCreationDate: creationDate,
           };
@@ -70,12 +67,11 @@ const MyProvider = (props) => {
     console.log(state);
   };
   const joinExistingRoom = (roomId) => {
-    const playerId = Shortid.generate();
+    setPlayerId(Shortid.generate());
 
     setState({
       ...state,
       currentRoom: roomId,
-      playerId,
     });
     history.push(`/${ROOM_ROUTES}`);
   };
@@ -83,7 +79,7 @@ const MyProvider = (props) => {
   const onPlayerRegisterToRoom = (name) => {
     const joinReqParams = {
       params: {
-        userID: state.playerId,
+        userID: playerId,
         roomID: state.currentRoom,
       },
     };
@@ -116,10 +112,10 @@ const MyProvider = (props) => {
         if (error) {
           console.log(errorMessage);
         } else {
+          setPlayerName(name);
           setState({
             ...state,
             isUserEnteredName: true,
-            playerName: name,
             joinDate: joinDate,
             roomPlayersList: [...roomPlayers],
             roomSocket,
@@ -127,13 +123,6 @@ const MyProvider = (props) => {
           });
         }
       });
-  };
-
-  const setName = (name) => {
-    setState({
-      ...state,
-      playerName: name,
-    });
   };
 
   return (
@@ -144,7 +133,6 @@ const MyProvider = (props) => {
           onRoomCreated: onRoomCreated,
           onPlayerRegisterToRoom: onPlayerRegisterToRoom,
           joinExistingRoom: joinExistingRoom,
-          setName: setName,
         }}
       >
         {props.children}
