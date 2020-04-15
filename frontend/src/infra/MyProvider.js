@@ -103,7 +103,6 @@ const MyProvider = (props) => {
             (data) => {
               setState({
                 ...state,
-                phase: PHASE.WAITING_ROOM,
                 roomPlayersList: data.roomPlayers,
               });
             }

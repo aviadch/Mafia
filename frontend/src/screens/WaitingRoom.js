@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import Typography from "@material-ui/core/Typography";
-import InputName from "../components/InputName";
-import WaitingPlayers from "../components/WaitingPlayers";
-import Button from "@material-ui/core/Button";
-import { MyContext } from "../infra/MyContext.js";
+import React, { useContext } from 'react';
+import Typography from '@material-ui/core/Typography';
+import InputName from '../components/InputName';
+import WaitingPlayers from '../components/WaitingPlayers';
+import Button from '@material-ui/core/Button';
+import { MyContext } from '../infra/MyContext.js';
 const WaitingRoom = () => {
   const context = useContext(MyContext);
 
@@ -13,7 +13,6 @@ const WaitingRoom = () => {
         Waiting Room - RoomId: {context.state.currentRoom}
       </Typography>
       <>
-        {" "}
         {!context.state.isUserEnteredName && (
           <InputName
             label="Enter Your Name"
@@ -21,7 +20,6 @@ const WaitingRoom = () => {
           />
         )}
       </>
-
       <Button variant="contained" color="primary">
         Start the game
       </Button>
