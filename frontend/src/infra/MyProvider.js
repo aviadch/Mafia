@@ -1,31 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { MyContext } from "./MyContext";
+import React, { useState } from 'react';
+import { MyContext } from './MyContext';
 import {
   PHASE,
   SERVER_ADDRESS,
   SERVER_PORT,
   ROOM_ROUTES,
-} from "../shared_code/consts";
-import Shortid from "shortid";
-import axios from "axios";
-import { createSocketAndListen as createRoomSocket } from "./socketUtils.js";
+} from '../shared_code/consts';
+import Shortid from 'shortid';
+import axios from 'axios';
+import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
     phase: PHASE.WELCOME_SCREEN,
-    currentRoom: "",
+    currentRoom: '',
     isUserEnteredName: false,
-    playerName: "",
-    playerId: "",
+    playerName: '',
+    playerId: '',
     roomPlayersList: [],
-    joinDate: "",
-    roomCreationDate: "",
+    joinDate: '',
+    roomCreationDate: '',
     roomSocket: null,
     roomSocketPort: null,
   });
 
-  const onNewRoom = () => {
-    console.log("onNewRoom Pressed");
+  const onRoomCreated = () => {
     const playerId = Shortid.generate();
     setState({
       ...state,
@@ -35,14 +34,12 @@ const MyProvider = (props) => {
     const req = { creatorID: playerId };
 
     axios
-      .post(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/create`, req)
+      .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        console.log(res.data);
         const { roomID, creationDate, socketPort: roomSocketPort } = res.data;
-        console.log(`roomID:${roomID}`);
         const roomSocket = createRoomSocket(
           roomSocketPort,
-          "NewPlayer",
+          'PlayerJoinedRoom',
           (data) => {
             setState({
               ...state,
@@ -64,8 +61,7 @@ const MyProvider = (props) => {
 
     console.log(state);
   };
-
-  const joinRoom = (roomId) => {
+  const joinExistingRoom = (roomId) => {
     const playerId = Shortid.generate();
 
     setState({
@@ -83,9 +79,11 @@ const MyProvider = (props) => {
       },
     };
     axios
-      .get(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/join`, joinReqParams)
+      .get(
+        `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/join`,
+        joinReqParams
+      )
       .then((res) => {
-        console.log(res.data);
         const {
           joinDate,
           roomPlayers,
@@ -94,16 +92,18 @@ const MyProvider = (props) => {
           roomSocketPort,
         } = res.data;
         let roomSocket = null;
-        console.log(state.roomSocketPort, state.roomSocket);
         if (!state.roomSocketPort) {
-          console.log(`create new socket`);
-          roomSocket = createRoomSocket(roomSocketPort, "NewPlayer", (data) => {
-            setState({
-              ...state,
-              phase: PHASE.WAITING_ROOM,
-              roomPlayersList: data.roomPlayers,
-            });
-          });
+          roomSocket = createRoomSocket(
+            roomSocketPort,
+            'PlayerJoinedRoom',
+            (data) => {
+              setState({
+                ...state,
+                phase: PHASE.WAITING_ROOM,
+                roomPlayersList: data.roomPlayers,
+              });
+            }
+          );
         }
         if (error) {
           console.log(errorMessage);
@@ -133,9 +133,9 @@ const MyProvider = (props) => {
       <MyContext.Provider
         value={{
           state: state,
-          onNewRoom: onNewRoom,
+          onRoomCreated: onRoomCreated,
           onPlayerRegisterToRoom: onPlayerRegisterToRoom,
-          joinRoom: joinRoom,
+          joinExistingRoom: joinExistingRoom,
           setName: setName,
         }}
       >
