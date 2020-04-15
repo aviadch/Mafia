@@ -1,7 +1,7 @@
-const express = require("express");
-const { createNewSocket: createNewRoomScoket } = require("./socket.js");
+const express = require('express');
+const { createNewSocket: createNewRoomSocket } = require('./socket.js');
 
-const roomSockets = {};
+const roomsSockets = {};
 
 let roomRouter = express.Router();
 
@@ -9,44 +9,44 @@ let roomRouter = express.Router();
 let roomCreated = false;
 let roomPlayers = [];
 const roomIDGenerator = () => {
-  return "1";
+  return '1';
 };
 
 // middleware that is specific to this router
 roomRouter.use((req, res, next) => {
   res.date = Date.now();
-  console.log("Time: ", Date.now());
+  console.log('Time: ', Date.now());
   next();
 });
 
-roomRouter.post("/create", async (req, res) => {
+roomRouter.post('/create', async (req, res) => {
   const { creatorID } = req.body;
   const roomID = roomIDGenerator();
   roomCreated = true;
   try {
-    const [socket, socketPort] = await createNewRoomScoket();
-    console.log(`socket port got from function:${socketPort}`);
-    roomSockets[roomID] = [socket, socketPort];
+    const [roomSocket, roomSocketPort] = await createNewRoomSocket();
+    console.log(`socket port got from function:${roomSocketPort}`);
+    roomsSockets[roomID] = [roomSocket, roomSocketPort];
     res.send({
       roomID,
       creatorID,
       creationDate: res.date,
-      socketPort: socketPort,
+      roomSocketPort,
     });
   } catch (e) {
     console.log(`An error occured while getting socket: ${e}`);
   }
 });
 
-roomRouter.get("/join", (req, res) => {
+roomRouter.get('/join', (req, res) => {
   const { userID, roomID, playerName } = req.query;
   const playerToAdd = { id: userID, name: playerName };
   console.log(`roomID:${roomID}`);
   if (Number(roomID) === 1 && roomCreated) {
     roomPlayers.push(playerToAdd);
-    const [roomSocket, roomSocketPort] = roomSockets[roomID];
-    roomSocket.emit("NewPlayer", {
-      message: "A new user has joined the room",
+    const [roomSocket, roomSocketPort] = roomsSockets[roomID];
+    roomSocket.emit('PlayerJoinedRoom', {
+      message: 'A new user has joined the room',
       roomPlayers,
     });
     res.send({ joinDate: res.date, roomPlayers, roomSocketPort });

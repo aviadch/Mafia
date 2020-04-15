@@ -4,4 +4,5 @@ let socket = null;
 export const createSocketAndListen = (socketPort, event, callback) => {
   socket = socketIOClient(`${SERVER_ADDRESS}:${socketPort}`);
   socket.on(event, callback);
+  return socket;
 };

@@ -1,29 +1,31 @@
-import React, { useState } from "react";
-import { MyContext } from "./MyContext";
+import React, { useState } from 'react';
+import { MyContext } from './MyContext';
 import {
   SERVER_ADDRESS,
   SERVER_PORT,
   ROOM_ROUTES,
-} from "../shared_code/consts";
-import Shortid from "shortid";
-import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { createSocketAndListen } from "./socketUtils.js";
+} from '../shared_code/consts';
+import Shortid from 'shortid';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
-    currentRoom: "",
+    currentRoom: '',
     isUserEnteredName: false,
-    playerName: "",
-    playerId: "",
+    playerName: '',
+    playerId: '',
     roomPlayersList: [],
-    joinDate: "",
-    roomCreationDate: "",
+    joinDate: '',
+    roomCreationDate: '',
+    roomSocket: null,
+    roomSocketPort: null,
   });
   let history = useHistory();
 
-  const onNewRoom = () => {
-    history.push(ROOM_ROUTES);
+  const onRoomCreated = () => {
+    history.push(`/${ROOM_ROUTES}`);
     const playerId = Shortid.generate();
     setState({
       ...state,
@@ -32,19 +34,23 @@ const MyProvider = (props) => {
     const req = { creatorID: playerId };
 
     axios
-      .post(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/create`, req)
+      .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        const { roomID, creationDate, socketPort } = res.data;
-        console.log(`roomID:${roomID}`);
-        createSocketAndListen(socketPort, "NewPlayer", (data) => {
-          setState({
-            ...state,
-            roomPlayersList: data.roomPlayers,
-          });
-        });
-
+        const { roomID, creationDate, roomSocketPort } = res.data;
+        const roomSocket = createRoomSocket(
+          roomSocketPort,
+          'PlayerJoinedRoom',
+          (data) => {
+            setState({
+              ...state,
+              roomPlayersList: data.roomPlayers,
+            });
+          }
+        );
         setState({
           ...state,
+          roomSocketPort,
+          roomSocket,
           playerId: playerId,
           currentRoom: roomID,
           roomCreationDate: creationDate,
@@ -58,8 +64,7 @@ const MyProvider = (props) => {
 
     console.log(state);
   };
-
-  const joinRoom = (roomId) => {
+  const joinExistingRoom = (roomId) => {
     const playerId = Shortid.generate();
 
     setState({
@@ -69,6 +74,7 @@ const MyProvider = (props) => {
     });
     history.push(ROOM_ROUTES);
   };
+
   const onPlayerRegisterToRoom = (name) => {
     const joinReqParams = {
       params: {
@@ -77,21 +83,32 @@ const MyProvider = (props) => {
       },
     };
     axios
-      .get(`${SERVER_ADDRESS}:${SERVER_PORT}${ROOM_ROUTES}/join`, joinReqParams)
+      .get(
+        `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/join`,
+        joinReqParams
+      )
       .then((res) => {
         const {
           joinDate,
           roomPlayers,
           error,
           errorMessage,
-          socketPort,
+          roomSocketPort,
         } = res.data;
-        createSocketAndListen(socketPort, "NewPlayer", (data) => {
-          setState({
-            ...state,
-            roomPlayersList: data.roomPlayers,
-          });
-        });
+        let roomSocket = null;
+        if (!state.roomSocketPort) {
+          roomSocket = createRoomSocket(
+            roomSocketPort,
+            'PlayerJoinedRoom',
+            (data) => {
+              setState({
+                ...state,
+                phase: PHASE.WAITING_ROOM,
+                roomPlayersList: data.roomPlayers,
+              });
+            }
+          );
+        }
         if (error) {
           console.log(errorMessage);
         } else {
@@ -101,6 +118,8 @@ const MyProvider = (props) => {
             playerName: name,
             joinDate: joinDate,
             roomPlayersList: [...roomPlayers],
+            roomSocket,
+            roomSocketPort,
           });
         }
       });
@@ -118,9 +137,9 @@ const MyProvider = (props) => {
       <MyContext.Provider
         value={{
           state: state,
-          onNewRoom: onNewRoom,
+          onRoomCreated: onRoomCreated,
           onPlayerRegisterToRoom: onPlayerRegisterToRoom,
-          joinRoom: joinRoom,
+          joinExistingRoom: joinExistingRoom,
           setName: setName,
         }}
       >

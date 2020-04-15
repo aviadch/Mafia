@@ -19,7 +19,7 @@ const InputName = (props) => {
         variant="contained"
         color="primary"
         onClick={() => {
-          return props.onSumbit(name);
+          return props.onSubmit(name);
         }}
       >
         Submit
