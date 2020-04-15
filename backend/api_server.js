@@ -1,13 +1,16 @@
 // import express (after npm install express)
 const express = require("express");
 const bodyParser = require("body-parser");
-
 const cors = require("cors");
-
 // create new express app and save it as "app"
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+};
+app.use(cors(corsOptions));
+
 // server configuration
 const PORT = 8080;
 

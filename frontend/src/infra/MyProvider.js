@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { MyContext } from './MyContext';
 import {
   PHASE,
@@ -10,12 +10,8 @@ import Shortid from 'shortid';
 import axios from 'axios';
 import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 
-class MyProvider extends Component {
-  constructor() {
-    super();
-  }
-
-  state = {
+const MyProvider = (props) => {
+  const [state, setState] = useState({
     phase: PHASE.WELCOME_SCREEN,
     currentRoom: '',
     isUserEnteredName: false,
@@ -26,55 +22,61 @@ class MyProvider extends Component {
     roomCreationDate: '',
     roomSocket: null,
     roomSocketPort: null,
-  };
+  });
 
-  onRoomCreated = () => {
+  const onRoomCreated = () => {
     const playerId = Shortid.generate();
-    this.setState({
+    setState({
+      ...state,
       phase: PHASE.WAITING_ROOM,
       playerId,
     });
     const req = { creatorID: playerId };
+
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        const {
-          roomID,
-          a,
-          creationDate,
-          socketPort: roomSocketPort,
-        } = res.data;
+        const { roomID, creationDate, roomSocketPort } = res.data;
         const roomSocket = createRoomSocket(
           roomSocketPort,
           'PlayerJoinedRoom',
           (data) => {
-            this.setState({
+            setState({
+              ...state,
+              phase: PHASE.WAITING_ROOM,
               roomPlayersList: data.roomPlayers,
             });
           }
         );
-        this.setState({
+        setState({
+          ...state,
           roomSocketPort,
           roomSocket,
+          phase: PHASE.WAITING_ROOM,
+          playerId: playerId,
           currentRoom: roomID,
           roomCreationDate: creationDate,
         });
       });
+
+    console.log(state);
   };
-  joinExistingRoom = (roomId) => {
+  const joinExistingRoom = (roomId) => {
     const playerId = Shortid.generate();
-    this.setState({
+
+    setState({
+      ...state,
       phase: PHASE.WAITING_ROOM,
       currentRoom: roomId,
       playerId,
     });
   };
 
-  onPlayerRegisterToRoom = (name) => {
+  const onPlayerRegisterToRoom = (name) => {
     const joinReqParams = {
       params: {
-        userID: this.state.playerId,
-        roomID: this.state.currentRoom,
+        userID: state.playerId,
+        roomID: state.currentRoom,
       },
     };
     axios
@@ -91,12 +93,14 @@ class MyProvider extends Component {
           roomSocketPort,
         } = res.data;
         let roomSocket = null;
-        if (!this.state.roomSocketPort) {
+        if (!state.roomSocketPort) {
           roomSocket = createRoomSocket(
             roomSocketPort,
             'PlayerJoinedRoom',
             (data) => {
-              this.setState({
+              setState({
+                ...state,
+                phase: PHASE.WAITING_ROOM,
                 roomPlayersList: data.roomPlayers,
               });
             }
@@ -105,7 +109,8 @@ class MyProvider extends Component {
         if (error) {
           console.log(errorMessage);
         } else {
-          this.setState({
+          setState({
+            ...state,
             isUserEnteredName: true,
             playerName: name,
             joinDate: joinDate,
@@ -117,27 +122,28 @@ class MyProvider extends Component {
       });
   };
 
-  setName = (name) => {
-    this.setState({
+  const setName = (name) => {
+    setState({
+      ...state,
       playerName: name,
     });
   };
 
-  render() {
-    return (
+  return (
+    <div>
       <MyContext.Provider
         value={{
-          state: this.state,
-          onRoomCreated: this.onRoomCreated,
-          onPlayerRegisterToRoom: this.onPlayerRegisterToRoom,
-          joinExistingRoom: this.joinExistingRoom,
-          setName: this.setName,
+          state: state,
+          onRoomCreated: onRoomCreated,
+          onPlayerRegisterToRoom: onPlayerRegisterToRoom,
+          joinExistingRoom: joinExistingRoom,
+          setName: setName,
         }}
       >
-        {this.props.children}
+        {props.children}
       </MyContext.Provider>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default MyProvider;

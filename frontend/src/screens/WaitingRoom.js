@@ -1,43 +1,35 @@
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import Typography from "@material-ui/core/Typography";
 import InputName from "../components/InputName";
 import WaitingPlayers from "../components/WaitingPlayers";
 import Button from "@material-ui/core/Button";
 import { MyContext } from "../infra/MyContext.js";
+const WaitingRoom = () => {
+  const context = useContext(MyContext);
 
-const MOCK_playerList = ["Elisha", "Lahav", "Aviad"];
-class WaitingRoom extends Component {
-  render() {
-    return (
-      <div className="waiting-room">
-        <MyContext.Consumer>
-          {(context) => {
-            return (
-              <div>
-                <Typography variant="h1" component="h2" gutterBottom>
-                  Waiting Room - RoomId: {context.state.currentRoom}
-                </Typography>
-                {!context.state.isUserEnteredName ? (
-                  <>
-                    <InputName />
-                  </>
-                ) : (
-                  <></>
-                )}
+  return (
+    <div className="waiting-room">
+      <Typography variant="h1" component="h2" gutterBottom>
+        Waiting Room - RoomId: {context.state.currentRoom}
+      </Typography>
+      <>
+        {" "}
+        {!context.state.isUserEnteredName && (
+          <InputName
+            label="Enter Your Name"
+            onSubmit={context.onPlayerRegisterToRoom}
+          />
+        )}
+      </>
 
-                <Button variant="contained" color="primary">
-                  Start
-                </Button>
-                <h2>game id</h2>
+      <Button variant="contained" color="primary">
+        Start the game
+      </Button>
+      <h2>game id</h2>
 
-                <WaitingPlayers />
-              </div>
-            );
-          }}
-        </MyContext.Consumer>
-      </div>
-    );
-  }
-}
+      <WaitingPlayers />
+    </div>
+  );
+};
 
 export default WaitingRoom;
