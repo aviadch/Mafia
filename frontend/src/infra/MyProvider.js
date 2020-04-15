@@ -14,7 +14,6 @@ const MyProvider = (props) => {
   const [state, setState] = useState({
     isUserRegisteredToRoom: false,
     roomPlayersList: [],
-    joinDate: '',
     roomCreationDate: '',
     roomSocket: null,
     roomSocketPort: null,
@@ -23,6 +22,8 @@ const MyProvider = (props) => {
   const [playerName, setPlayerName] = useState('');
   const [playerId, setPlayerId] = useState('');
   const [currentRoomID, setcurrentRoomID] = useState('');
+  const [roomPlayersList, setRoomPlayersList] = useState([]);
+  const [joinDate, setJoinDate] = useState('');
 
   let history = useHistory();
 
@@ -40,12 +41,7 @@ const MyProvider = (props) => {
           roomSocketPort,
           'PlayerJoinedRoom',
           (data) => {
-            setState((prevState) => {
-              return {
-                ...prevState,
-                roomPlayersList: data.roomPlayers,
-              };
-            });
+            setRoomPlayersList(data.roomPlayersList);
           }
         );
         setcurrentRoomID(roomID);
@@ -67,6 +63,7 @@ const MyProvider = (props) => {
 
     console.log(state);
   };
+
   const joinExistingRoom = (roomId) => {
     setPlayerId(Shortid.generate());
     setcurrentRoomID(roomId);
@@ -86,23 +83,14 @@ const MyProvider = (props) => {
         joinReqParams
       )
       .then((res) => {
-        const {
-          joinDate,
-          roomPlayers,
-          error,
-          errorMessage,
-          roomSocketPort,
-        } = res.data;
+        const { error, errorMessage, roomSocketPort } = res.data;
         let roomSocket = null;
         if (!state.roomSocketPort) {
           roomSocket = createRoomSocket(
             roomSocketPort,
             'PlayerJoinedRoom',
             (data) => {
-              setState({
-                ...state,
-                roomPlayersList: data.roomPlayers,
-              });
+              setRoomPlayersList(data.roomPlayersList);
             }
           );
         }
@@ -110,11 +98,11 @@ const MyProvider = (props) => {
           console.log(errorMessage);
         } else {
           setPlayerName(name);
+          setRoomPlayersList(res.data.roomPlayersList);
+          setJoinDate(res.data.joinDate);
           setState({
             ...state,
             isUserRegisteredToRoom: true,
-            joinDate: joinDate,
-            roomPlayersList: [...roomPlayers],
             roomSocket,
             roomSocketPort,
           });
@@ -130,6 +118,8 @@ const MyProvider = (props) => {
           playerName,
           playerId,
           currentRoomID,
+          roomPlayersList,
+          joinDate,
           onRoomCreated: onRoomCreated,
           onPlayerRegisterToRoom: onPlayerRegisterToRoom,
           joinExistingRoom: joinExistingRoom,

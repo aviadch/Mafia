@@ -7,7 +7,7 @@ let roomRouter = express.Router();
 
 // Mockups
 let roomCreated = false;
-let roomPlayers = [];
+let roomPlayersList = [];
 const roomIDGenerator = () => {
   return '1';
 };
@@ -43,13 +43,13 @@ roomRouter.get('/join', (req, res) => {
   const playerToAdd = { id: userID, name: playerName };
   console.log(`roomID:${roomID}`);
   if (Number(roomID) === 1 && roomCreated) {
-    roomPlayers.push(playerToAdd);
+    roomPlayersList.push(playerToAdd);
     const [roomSocket, roomSocketPort] = roomsSockets[roomID];
     roomSocket.emit('PlayerJoinedRoom', {
       message: 'A new user has joined the room',
-      roomPlayers,
+      roomPlayersList,
     });
-    res.send({ joinDate: res.date, roomPlayers, roomSocketPort });
+    res.send({ joinDate: res.date, roomPlayersList, roomSocketPort });
   } else {
     res.send({ error: true, errorMessage: `room ${roomID} does not exists` });
   }
