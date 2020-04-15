@@ -12,7 +12,7 @@ import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
-    currentRoom: '',
+    currentRoomID: '',
     isUserEnteredName: false,
     roomPlayersList: [],
     joinDate: '',
@@ -53,7 +53,7 @@ const MyProvider = (props) => {
             ...prevState,
             roomSocketPort,
             roomSocket,
-            currentRoom: roomID,
+            currentRoomID: roomID,
             roomCreationDate: creationDate,
           };
         });
@@ -71,7 +71,7 @@ const MyProvider = (props) => {
 
     setState({
       ...state,
-      currentRoom: roomId,
+      currentRoomID: roomId,
     });
     history.push(`/${ROOM_ROUTES}`);
   };
@@ -80,7 +80,7 @@ const MyProvider = (props) => {
     const joinReqParams = {
       params: {
         userID: playerId,
-        roomID: state.currentRoom,
+        roomID: state.currentRoomID,
       },
     };
     axios
