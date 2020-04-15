@@ -38,7 +38,6 @@ class MyProvider extends Component {
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        console.log(res.data);
         const {
           roomID,
           a,
@@ -84,7 +83,6 @@ class MyProvider extends Component {
         joinReqParams
       )
       .then((res) => {
-        console.log(res.data);
         const {
           joinDate,
           roomPlayers,
@@ -93,9 +91,7 @@ class MyProvider extends Component {
           roomSocketPort,
         } = res.data;
         let roomSocket = null;
-        console.log(this.state.roomSocketPort, this.state.roomSocket);
         if (!this.state.roomSocketPort) {
-          console.log(`create new socket`);
           roomSocket = createRoomSocket(
             roomSocketPort,
             'PlayerJoinedRoom',

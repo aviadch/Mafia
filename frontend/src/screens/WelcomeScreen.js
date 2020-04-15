@@ -14,7 +14,6 @@ class WelcomeScreen extends Component {
   }
   onChange = (event) => {
     const value = event.target.value;
-    console.log(this.state.roomToJoin);
     this.setState({ roomToJoin: value });
   };
   render() {
