@@ -13,7 +13,6 @@ import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 const MyProvider = (props) => {
   const [state, setState] = useState({
     isUserRegisteredToRoom: false,
-    roomCreationDate: '',
     roomSocket: null,
     roomSocketPort: null,
   });
