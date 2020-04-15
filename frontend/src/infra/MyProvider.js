@@ -12,7 +12,7 @@ import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
-    isUserEnteredName: false,
+    isUserRegisteredToRoom: false,
     roomPlayersList: [],
     joinDate: '',
     roomCreationDate: '',
@@ -112,7 +112,7 @@ const MyProvider = (props) => {
           setPlayerName(name);
           setState({
             ...state,
-            isUserEnteredName: true,
+            isUserRegisteredToRoom: true,
             joinDate: joinDate,
             roomPlayersList: [...roomPlayers],
             roomSocket,

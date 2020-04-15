@@ -13,7 +13,7 @@ const WaitingRoom = () => {
         Waiting Room - RoomId: {context.currentRoomID}
       </Typography>
       <>
-        {!context.state.isUserEnteredName && (
+        {!context.state.isUserRegisteredToRoom && (
           <InputName
             label="Enter Your Name"
             onSubmit={context.onPlayerRegisterToRoom}
