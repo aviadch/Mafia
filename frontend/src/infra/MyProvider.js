@@ -36,7 +36,7 @@ const MyProvider = (props) => {
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        const { roomID, creationDate, socketPort: roomSocketPort } = res.data;
+        const { roomID, creationDate, roomSocketPort } = res.data;
         const roomSocket = createRoomSocket(
           roomSocketPort,
           'PlayerJoinedRoom',
@@ -71,6 +71,7 @@ const MyProvider = (props) => {
       playerId,
     });
   };
+
   const onPlayerRegisterToRoom = (name) => {
     const joinReqParams = {
       params: {

@@ -24,14 +24,14 @@ roomRouter.post('/create', async (req, res) => {
   const roomID = roomIDGenerator();
   roomCreated = true;
   try {
-    const [socket, socketPort] = await createNewRoomSocket();
-    console.log(`socket port got from function:${socketPort}`);
-    roomsSockets[roomID] = [socket, socketPort];
+    const [roomSocket, roomSocketPort] = await createNewRoomSocket();
+    console.log(`socket port got from function:${roomSocketPort}`);
+    roomsSockets[roomID] = [roomSocket, roomSocketPort];
     res.send({
       roomID,
       creatorID,
       creationDate: res.date,
-      socketPort: socketPort,
+      roomSocketPort,
     });
   } catch (e) {
     console.log(`An error occured while getting socket: ${e}`);
