@@ -8,8 +8,8 @@ class Player extends Component {
         <img
           src={require("./player1.jpg")}
           alt={this.props.name}
-          height="200"
-          width="200"
+          height="100"
+          width="100"
         />
       </span>
     );

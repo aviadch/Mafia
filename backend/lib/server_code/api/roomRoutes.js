@@ -1,30 +1,55 @@
-const express = require("express");
+const express = require('express');
+const { createNewSocket: createNewRoomSocket } = require('./socket.js');
+
+const roomsSockets = {};
 
 let roomRouter = express.Router();
 
 // Mockups
 let roomCreated = false;
 let roomPlayers = [];
+const roomIDGenerator = () => {
+  return '1';
+};
 
 // middleware that is specific to this router
 roomRouter.use((req, res, next) => {
   res.date = Date.now();
-  console.log("Time: ", Date.now());
+  console.log('Time: ', Date.now());
   next();
 });
 
-roomRouter.post("/create", (req, res) => {
+roomRouter.post('/create', async (req, res) => {
   const { creatorID } = req.body;
-  roomPlayers.push(creatorID);
+  const roomID = roomIDGenerator();
   roomCreated = true;
-  res.send({ roomID: 1, creatorID, creationDate: res.date });
+  try {
+    const [socket, socketPort] = await createNewRoomSocket();
+    console.log(`socket port got from function:${socketPort}`);
+    roomsSockets[roomID] = [socket, socketPort];
+    res.send({
+      roomID,
+      creatorID,
+      creationDate: res.date,
+      socketPort: socketPort,
+    });
+  } catch (e) {
+    console.log(`An error occured while getting socket: ${e}`);
+  }
 });
 
-roomRouter.get("/join", (req, res) => {
-  const { userID, roomID } = req.query;
+roomRouter.get('/join', (req, res) => {
+  const { userID, roomID, playerName } = req.query;
+  const playerToAdd = { id: userID, name: playerName };
+  console.log(`roomID:${roomID}`);
   if (Number(roomID) === 1 && roomCreated) {
-    roomPlayers.push(userID);
-    res.send({ joinDate: res.date, roomPlayers });
+    roomPlayers.push(playerToAdd);
+    const [roomSocket, roomSocketPort] = roomsSockets[roomID];
+    roomSocket.emit('PlayerJoinedRoom', {
+      message: 'A new user has joined the room',
+      roomPlayers,
+    });
+    res.send({ joinDate: res.date, roomPlayers, roomSocketPort });
   } else {
     res.send({ error: true, errorMessage: `room ${roomID} does not exists` });
   }

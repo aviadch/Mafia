@@ -7,14 +7,6 @@ import { MyContext } from "../infra/MyContext.js";
 
 const MOCK_playerList = ["Elisha", "Lahav", "Aviad"];
 class WaitingRoom extends Component {
-  constructor() {
-    super();
-    this.state = {
-      isUserEntered: false,
-      playerList: MOCK_playerList,
-    };
-  }
-
   render() {
     return (
       <div className="waiting-room">
@@ -25,7 +17,7 @@ class WaitingRoom extends Component {
                 <Typography variant="h1" component="h2" gutterBottom>
                   Waiting Room - RoomId: {context.state.currentRoom}
                 </Typography>
-                {!context.state.isUserEntered ? (
+                {!context.state.isUserEnteredName ? (
                   <>
                     <InputName />
                   </>

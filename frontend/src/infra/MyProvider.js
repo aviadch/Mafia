@@ -1,52 +1,117 @@
-import React, { Component } from "react";
-import { MyContext } from "./MyContext";
-import { PHASE, SERVER_ADDRESS } from "../shared_code/consts";
-import Shortid from "shortid";
-import axios from "axios";
+import React, { Component } from 'react';
+import { MyContext } from './MyContext';
+import {
+  PHASE,
+  SERVER_ADDRESS,
+  SERVER_PORT,
+  ROOM_ROUTES,
+} from '../shared_code/consts';
+import Shortid from 'shortid';
+import axios from 'axios';
+import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 
 class MyProvider extends Component {
+  constructor() {
+    super();
+  }
+
   state = {
     phase: PHASE.WELCOME_SCREEN,
-    currentRoom: "",
-    isUserEntered: false,
-    playerName: "",
-    playerId: "",
-    playerList: [],
-    joinDate: "",
-    roomCreationDate: "",
+    currentRoom: '',
+    isUserEnteredName: false,
+    playerName: '',
+    playerId: '',
+    roomPlayersList: [],
+    joinDate: '',
+    roomCreationDate: '',
+    roomSocket: null,
+    roomSocketPort: null,
   };
 
-  onNewGame = () => {
+  onRoomCreated = () => {
     const playerId = Shortid.generate();
     this.setState({
       phase: PHASE.WAITING_ROOM,
-      playerId: playerId,
+      playerId,
     });
     const req = { creatorID: playerId };
-    axios.post(`${SERVER_ADDRESS}/room/create`, req).then((res) => {
-      const { roomID, a, creationDate } = res.data;
-      this.setState({
-        currentRoom: roomID,
-        roomCreationDate: creationDate,
+    axios
+      .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
+      .then((res) => {
+        const {
+          roomID,
+          a,
+          creationDate,
+          socketPort: roomSocketPort,
+        } = res.data;
+        const roomSocket = createRoomSocket(
+          roomSocketPort,
+          'PlayerJoinedRoom',
+          (data) => {
+            this.setState({
+              roomPlayersList: data.roomPlayers,
+            });
+          }
+        );
+        this.setState({
+          roomSocketPort,
+          roomSocket,
+          currentRoom: roomID,
+          roomCreationDate: creationDate,
+        });
       });
+  };
+  joinExistingRoom = (roomId) => {
+    const playerId = Shortid.generate();
+    this.setState({
+      phase: PHASE.WAITING_ROOM,
+      currentRoom: roomId,
+      playerId,
     });
   };
 
-  onNameEntered = (name) => {
+  onPlayerRegisterToRoom = (name) => {
+    const joinReqParams = {
+      params: {
+        userID: this.state.playerId,
+        roomID: this.state.currentRoom,
+      },
+    };
     axios
       .get(
-        `${SERVER_ADDRESS}/room/join?userID=${this.state.playerId}&roomID=${this.state.currentRoom}`
+        `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/join`,
+        joinReqParams
       )
       .then((res) => {
-        const { joinDate, roomPlayers, error, errorMessage } = res.data;
+        const {
+          joinDate,
+          roomPlayers,
+          error,
+          errorMessage,
+          roomSocketPort,
+        } = res.data;
+        let roomSocket = null;
+        if (!this.state.roomSocketPort) {
+          roomSocket = createRoomSocket(
+            roomSocketPort,
+            'PlayerJoinedRoom',
+            (data) => {
+              this.setState({
+                roomPlayersList: data.roomPlayers,
+              });
+            }
+          );
+        }
         if (error) {
           console.log(errorMessage);
         } else {
           this.setState({
-            isUserEntered: true,
+            isUserEnteredName: true,
             playerName: name,
             joinDate: joinDate,
-            playerList: [...roomPlayers],
+            roomPlayersList: [...roomPlayers],
+            roomSocket,
+            roomSocketPort,
           });
         }
       });
@@ -63,8 +128,9 @@ class MyProvider extends Component {
       <MyContext.Provider
         value={{
           state: this.state,
-          onNewGame: this.onNewGame,
-          onNameEntered: this.onNameEntered,
+          onRoomCreated: this.onRoomCreated,
+          onPlayerRegisterToRoom: this.onPlayerRegisterToRoom,
+          joinExistingRoom: this.joinExistingRoom,
           setName: this.setName,
         }}
       >
