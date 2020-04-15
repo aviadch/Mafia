@@ -12,7 +12,6 @@ import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 
 const MyProvider = (props) => {
   const [state, setState] = useState({
-    isUserRegisteredToRoom: false,
     roomSocket: null,
     roomSocketPort: null,
   });
@@ -23,6 +22,7 @@ const MyProvider = (props) => {
   const [roomPlayersList, setRoomPlayersList] = useState([]);
   const [joinDate, setJoinDate] = useState('');
   const [roomCreationDate, setRoomCreationDate] = useState('');
+  const [isPlayerRegisteredToRoom, registerPlayer] = useState(false);
 
   let history = useHistory();
 
@@ -35,6 +35,8 @@ const MyProvider = (props) => {
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
+        setcurrentRoomID(res.data.roomID);
+        setRoomCreationDate(res.data.creationDate);
         const { roomSocketPort } = res.data;
         const roomSocket = createRoomSocket(
           roomSocketPort,
@@ -43,8 +45,7 @@ const MyProvider = (props) => {
             setRoomPlayersList(data.roomPlayersList);
           }
         );
-        setcurrentRoomID(res.data.roomID);
-        setRoomCreationDate(res.data.creationDate);
+
         setState((prevState) => {
           return {
             ...prevState,
@@ -69,6 +70,7 @@ const MyProvider = (props) => {
   };
 
   const onPlayerRegisterToRoom = (name) => {
+    registerPlayer(true);
     const joinReqParams = {
       params: {
         userID: playerId,
@@ -100,7 +102,6 @@ const MyProvider = (props) => {
           setJoinDate(res.data.joinDate);
           setState({
             ...state,
-            isUserRegisteredToRoom: true,
             roomSocket,
             roomSocketPort,
           });
@@ -119,6 +120,7 @@ const MyProvider = (props) => {
           roomPlayersList,
           joinDate,
           roomCreationDate,
+          isPlayerRegisteredToRoom,
           onRoomCreated: onRoomCreated,
           onPlayerRegisterToRoom: onPlayerRegisterToRoom,
           joinExistingRoom: joinExistingRoom,
