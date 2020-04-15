@@ -72,7 +72,7 @@ const MyProvider = (props) => {
       currentRoom: roomId,
       playerId,
     });
-    history.push(ROOM_ROUTES);
+    history.push(`/${ROOM_ROUTES}`);
   };
 
   const onPlayerRegisterToRoom = (name) => {
