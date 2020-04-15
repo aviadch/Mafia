@@ -10,7 +10,7 @@ const WaitingRoom = () => {
   return (
     <div className="waiting-room">
       <Typography variant="h1" component="h2" gutterBottom>
-        Waiting Room - RoomId: {context.state.currentRoomID}
+        Waiting Room - RoomId: {context.currentRoomID}
       </Typography>
       <>
         {!context.state.isUserEnteredName && (

@@ -23,6 +23,7 @@ const MyProvider = (props) => {
 
   const [playerName, setPlayerName] = useState('');
   const [playerId, setPlayerId] = useState('');
+  const [currentRoomID, setcurrentRoomID] = useState('');
 
   let history = useHistory();
 
@@ -48,6 +49,7 @@ const MyProvider = (props) => {
             });
           }
         );
+        setcurrentRoomID(roomID);
         setState((prevState) => {
           return {
             ...prevState,
@@ -68,11 +70,7 @@ const MyProvider = (props) => {
   };
   const joinExistingRoom = (roomId) => {
     setPlayerId(Shortid.generate());
-
-    setState({
-      ...state,
-      currentRoomID: roomId,
-    });
+    setcurrentRoomID(roomId);
     history.push(`/${ROOM_ROUTES}`);
   };
 
@@ -80,7 +78,7 @@ const MyProvider = (props) => {
     const joinReqParams = {
       params: {
         userID: playerId,
-        roomID: state.currentRoomID,
+        roomID: currentRoomID,
       },
     };
     axios
@@ -130,6 +128,7 @@ const MyProvider = (props) => {
       <MyContext.Provider
         value={{
           state: state,
+          currentRoomID,
           onRoomCreated: onRoomCreated,
           onPlayerRegisterToRoom: onPlayerRegisterToRoom,
           joinExistingRoom: joinExistingRoom,
