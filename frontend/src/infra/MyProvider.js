@@ -13,7 +13,6 @@ import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
 const MyProvider = (props) => {
   const [state, setState] = useState({
     isUserRegisteredToRoom: false,
-    roomPlayersList: [],
     roomCreationDate: '',
     roomSocket: null,
     roomSocketPort: null,
@@ -24,6 +23,7 @@ const MyProvider = (props) => {
   const [currentRoomID, setcurrentRoomID] = useState('');
   const [roomPlayersList, setRoomPlayersList] = useState([]);
   const [joinDate, setJoinDate] = useState('');
+  const [roomCreationDate, setRoomCreationDate] = useState('');
 
   let history = useHistory();
 
@@ -36,7 +36,7 @@ const MyProvider = (props) => {
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        const { roomID, creationDate, roomSocketPort } = res.data;
+        const { roomSocketPort } = res.data;
         const roomSocket = createRoomSocket(
           roomSocketPort,
           'PlayerJoinedRoom',
@@ -44,14 +44,13 @@ const MyProvider = (props) => {
             setRoomPlayersList(data.roomPlayersList);
           }
         );
-        setcurrentRoomID(roomID);
+        setcurrentRoomID(res.data.roomID);
+        setRoomCreationDate(res.data.creationDate);
         setState((prevState) => {
           return {
             ...prevState,
             roomSocketPort,
             roomSocket,
-            currentRoomID: roomID,
-            roomCreationDate: creationDate,
           };
         });
 
@@ -120,6 +119,7 @@ const MyProvider = (props) => {
           currentRoomID,
           roomPlayersList,
           joinDate,
+          roomCreationDate,
           onRoomCreated: onRoomCreated,
           onPlayerRegisterToRoom: onPlayerRegisterToRoom,
           joinExistingRoom: joinExistingRoom,
