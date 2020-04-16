@@ -37,25 +37,26 @@ const MyProvider = (props) => {
 
   let history = useHistory();
 
-  const onRoomCreated = () => {
+  const onRoomCreated = async () => {
     history.push(`/${ROOM_ROUTES}`);
     playerDispatch({ type: 'generateUniqueID' });
     const req = { creatorID: player.id };
-    axios
-      .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
-      .then((res) => {
-        roomDispatch({
-          type: 'initRoom',
-          data: {
-            id: res.data.roomID,
-            creationDate: res.data.creationDate,
-            socketPort: res.data.roomSocketPort,
-          },
-        });
-      })
-      .catch((err) => {
-        window.alert(`Server giving us something wrong! ${err}`);
+    try {
+      const res = await axios.post(
+        `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`,
+        req
+      );
+      roomDispatch({
+        type: 'initRoom',
+        data: {
+          id: res.data.roomID,
+          creationDate: res.data.creationDate,
+          socketPort: res.data.roomSocketPort,
+        },
       });
+    } catch (err) {
+      window.alert(`Server giving us something wrong! ${err}`);
+    }
   };
 
   const joinExistingRoom = (roomId) => {
@@ -64,32 +65,36 @@ const MyProvider = (props) => {
     history.push(`/${ROOM_ROUTES}`);
   };
 
-  const onPlayerRegisterToRoom = (name) => {
+  const onPlayerRegisterToRoom = async (name) => {
     playerDispatch({ type: 'registerToRoom', name });
 
-    axios
-      .get(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/register`, {
+    const res = await axios.get(
+      `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/register`,
+      {
         params: {
           playerID: player.id,
           playerName: name,
           roomID: room.id,
         },
-      })
-      .then((res) => {
-        const { error, errorMessage } = res.data;
-        if (error) {
-          console.log(errorMessage);
-        } else {
-          roomDispatch({
-            type: 'initRoom',
-            data: {
-              creationDate: res.data.creationDate,
-              playersList: res.data.roomPlayersList,
-              socketPort: res.data.roomSocketPort,
-            },
-          });
-        }
-      });
+      }
+    );
+    try {
+      const { error, errorMessage } = res.data;
+      if (error) {
+        console.log(errorMessage);
+      } else {
+        roomDispatch({
+          type: 'initRoom',
+          data: {
+            creationDate: res.data.creationDate,
+            playersList: res.data.roomPlayersList,
+            socketPort: res.data.roomSocketPort,
+          },
+        });
+      }
+    } catch (err) {
+      console.log(`An error occured:${err}`);
+    }
   };
 
   return (
