@@ -67,18 +67,18 @@ const MyProvider = (props) => {
 
   const onPlayerRegisterToRoom = async (name) => {
     playerDispatch({ type: 'registerToRoom', name });
-
-    const res = await axios.get(
-      `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/register`,
-      {
-        params: {
-          playerID: player.id,
-          playerName: name,
-          roomID: room.id,
-        },
-      }
-    );
     try {
+      const res = await axios.get(
+        `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/register`,
+        {
+          params: {
+            playerID: player.id,
+            playerName: name,
+            roomID: room.id,
+          },
+        }
+      );
+
       const { error, errorMessage } = res.data;
       if (error) {
         console.log(errorMessage);
