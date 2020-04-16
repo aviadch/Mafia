@@ -10,10 +10,10 @@ const WaitingRoom = () => {
   return (
     <div className="waiting-room">
       <Typography variant="h1" component="h2" gutterBottom>
-        Waiting Room - RoomId: {context.currentRoomID}
+        Waiting Room - RoomId: {context.room.id}
       </Typography>
       <>
-        {!context.isPlayerRegisteredToRoom && (
+        {!context.player.isRegistered && (
           <InputName
             label="Enter Your Name"
             onSubmit={context.onPlayerRegisterToRoom}

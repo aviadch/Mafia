@@ -38,18 +38,20 @@ roomRouter.post('/create', async (req, res) => {
   }
 });
 
-roomRouter.get('/join', (req, res) => {
-  const { userID, roomID, playerName } = req.query;
-  const playerToAdd = { id: userID, name: playerName };
+roomRouter.get('/register', (req, res) => {
+  console.log(req.query);
+  const { playerID, roomID, playerName } = req.query;
+  const playerToAdd = { id: playerID, name: playerName };
+  console.log(playerToAdd);
   console.log(`roomID:${roomID}`);
   if (Number(roomID) === 1 && roomCreated) {
     roomPlayersList.push(playerToAdd);
     const [roomSocket, roomSocketPort] = roomsSockets[roomID];
-    roomSocket.emit('PlayerJoinedRoom', {
-      message: 'A new user has joined the room',
+    roomSocket.emit('PlayerRegisteredRoom', {
+      message: 'A new player has registered to the room',
       roomPlayersList,
     });
-    res.send({ joinDate: res.date, roomPlayersList, roomSocketPort });
+    res.send({ registerDate: res.date, roomPlayersList, roomSocketPort });
   } else {
     res.send({ error: true, errorMessage: `room ${roomID} does not exists` });
   }

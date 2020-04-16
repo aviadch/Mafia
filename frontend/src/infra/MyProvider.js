@@ -1,45 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import { MyContext } from './MyContext';
 import {
   SERVER_ADDRESS,
   SERVER_PORT,
   ROOM_ROUTES,
 } from '../shared_code/consts';
-import Shortid from 'shortid';
+import { verifySocketListen } from './socketUtils.js';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import { createSocketAndListen as createRoomSocket } from './socketUtils.js';
+
+import { playerReducer, playerInitialState } from './PlayerReducer';
+import { roomInitialState, roomReducer } from './RoomReducer';
 
 const MyProvider = (props) => {
-  const [playerName, setPlayerName] = useState('');
-  const [playerId, setPlayerId] = useState('');
-  const [currentRoomID, setcurrentRoomID] = useState('');
-  const [roomPlayersList, setRoomPlayersList] = useState([]);
-  const [joinDate, setJoinDate] = useState('');
-  const [roomCreationDate, setRoomCreationDate] = useState('');
-  const [isPlayerRegisteredToRoom, registerPlayer] = useState(false);
-  const [roomSocketPort, setRoomSocketPort] = useState(null);
-  const [roomSocket, setRoomSocket] = useState(null);
+  const [player, playerDispatch] = useReducer(
+    playerReducer,
+    playerInitialState
+  );
+
+  const [room, roomDispatch] = useReducer(roomReducer, roomInitialState);
+
+  const updatePlayerList = (data) => {
+    roomDispatch({
+      type: 'updatePlayerList',
+      data: {
+        playersList: data.roomPlayersList,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (room.socket) {
+      verifySocketListen(room.socket, 'PlayerRegisteredRoom', updatePlayerList);
+    }
+  }, [room.socket]);
+
+  useEffect(() => {
+    console.log(`player name changed to ${player.name}`);
+  }, [player.name]);
 
   let history = useHistory();
 
   const onRoomCreated = () => {
     history.push(`/${ROOM_ROUTES}`);
-    setPlayerId(Shortid.generate());
-
-    const req = { creatorID: playerId };
-
+    playerDispatch({ type: 'generateUniqueID' });
+    const req = { creatorID: player.id };
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        setcurrentRoomID(res.data.roomID);
-        setRoomCreationDate(res.data.creationDate);
-        setRoomSocketPort(res.data.roomSocketPort);
-        setRoomSocket(
-          createRoomSocket(roomSocketPort, 'PlayerJoinedRoom', (data) => {
-            setRoomPlayersList(data.roomPlayersList);
-          })
-        );
+        roomDispatch({
+          type: 'initRoom',
+          data: {
+            id: res.data.roomID,
+            creationDate: res.data.creationDate,
+            socketPort: res.data.roomSocketPort,
+          },
+        });
       })
       .catch((err) => {
         window.alert(`Server giving us something wrong! ${err}`);
@@ -47,19 +63,20 @@ const MyProvider = (props) => {
   };
 
   const joinExistingRoom = (roomId) => {
-    setPlayerId(Shortid.generate());
-    setcurrentRoomID(roomId);
+    playerDispatch({ type: 'generateUniqueID' });
+    roomDispatch({ type: 'setRoomId', data: { id: roomId } });
     history.push(`/${ROOM_ROUTES}`);
   };
 
   const onPlayerRegisterToRoom = (name) => {
-    registerPlayer(true);
+    playerDispatch({ type: 'registerToRoom', name });
 
     axios
-      .get(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/join`, {
+      .get(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/register`, {
         params: {
-          userID: playerId,
-          roomID: currentRoomID,
+          playerID: player.id,
+          playerName: name,
+          roomID: room.id,
         },
       })
       .then((res) => {
@@ -67,17 +84,14 @@ const MyProvider = (props) => {
         if (error) {
           console.log(errorMessage);
         } else {
-          setPlayerName(name);
-          setRoomPlayersList(res.data.roomPlayersList);
-          setJoinDate(res.data.joinDate);
-          setRoomSocketPort(res.data.roomSocketPort);
-          if (!roomSocket) {
-            setRoomSocket(
-              createRoomSocket(roomSocketPort, 'PlayerJoinedRoom', (data) => {
-                setRoomPlayersList(data.roomPlayersList);
-              })
-            );
-          }
+          roomDispatch({
+            type: 'initRoom',
+            data: {
+              creationDate: res.data.creationDate,
+              playersList: res.data.roomPlayersList,
+              socketPort: res.data.roomSocketPort,
+            },
+          });
         }
       });
   };
@@ -86,15 +100,8 @@ const MyProvider = (props) => {
     <div>
       <MyContext.Provider
         value={{
-          playerName,
-          playerId,
-          currentRoomID,
-          roomPlayersList,
-          joinDate,
-          roomCreationDate,
-          isPlayerRegisteredToRoom,
-          roomSocket,
-          roomSocketPort,
+          player,
+          room,
           onRoomCreated: onRoomCreated,
           onPlayerRegisterToRoom: onPlayerRegisterToRoom,
           joinExistingRoom: joinExistingRoom,
