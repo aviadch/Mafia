@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import Shortid from 'shortid';
 import { playerReducer, playerInitialState } from './PlayerReducer';
 import { roomInitialState, roomReducer } from './RoomReducer';
+import { createRoomFromServer } from '../APIUtils';
 
 const MyProvider = (props) => {
   const [player, playerDispatch] = useReducer(
@@ -34,6 +35,7 @@ const MyProvider = (props) => {
     playerDispatch({ type: 'setPlayerID', id });
     return id;
   };
+
   useEffect(() => {
     if (room.socket) {
       verifySocketListen(room.socket, 'PlayerRegisteredRoom', updatePlayerList);
@@ -44,24 +46,8 @@ const MyProvider = (props) => {
 
   const onRoomCreated = async () => {
     history.push(`/${ROOM_ROUTES}`);
-    playerDispatch({ type: 'generateUniqueID' });
-    const req = { creatorID: player.id };
-    try {
-      const res = await axios.post(
-        `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`,
-        req
-      );
-      roomDispatch({
-        type: 'initRoom',
-        data: {
-          id: res.data.roomID,
-          creationDate: res.data.creationDate,
-          socketPort: res.data.roomSocketPort,
-        },
-      });
-    } catch (err) {
-      window.alert(`Server giving us something wrong! ${err}`);
-    }
+    const roomCreatorID = generatePlayerId();
+    createRoomFromServer(roomDispatch, roomCreatorID);
   };
 
   const joinExistingRoom = (roomId) => {
@@ -83,7 +69,6 @@ const MyProvider = (props) => {
           },
         }
       );
-
       const { error, errorMessage } = res.data;
       if (error) {
         console.log(errorMessage);
