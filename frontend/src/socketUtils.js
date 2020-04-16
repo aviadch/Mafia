@@ -1,4 +1,4 @@
-import { SERVER_ADDRESS } from '../shared_code/consts';
+import { SERVER_ADDRESS } from './shared_code/consts';
 import socketIOClient from 'socket.io-client';
 let socket = null;
 

@@ -5,7 +5,7 @@ import {
   SERVER_PORT,
   ROOM_ROUTES,
 } from '../shared_code/consts';
-import { verifySocketListen } from './socketUtils.js';
+import { verifySocketListen } from '../socketUtils';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
