@@ -8,7 +8,7 @@ import {
 import { verifySocketListen } from '../socketUtils';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-
+import Shortid from 'shortid';
 import { playerReducer, playerInitialState } from './PlayerReducer';
 import { roomInitialState, roomReducer } from './RoomReducer';
 
@@ -29,6 +29,11 @@ const MyProvider = (props) => {
     });
   };
 
+  const generatePlayerId = () => {
+    const id = Shortid.generate();
+    playerDispatch({ type: 'setPlayerID', id });
+    return id;
+  };
   useEffect(() => {
     if (room.socket) {
       verifySocketListen(room.socket, 'PlayerRegisteredRoom', updatePlayerList);
