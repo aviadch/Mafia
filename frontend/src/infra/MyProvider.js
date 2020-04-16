@@ -35,10 +35,6 @@ const MyProvider = (props) => {
     }
   }, [room.socket]);
 
-  useEffect(() => {
-    console.log(`player name changed to ${player.name}`);
-  }, [player.name]);
-
   let history = useHistory();
 
   const onRoomCreated = () => {
