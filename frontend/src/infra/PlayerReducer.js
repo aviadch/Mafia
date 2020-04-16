@@ -11,6 +11,9 @@ export const playerReducer = (player, action) => {
     case 'generateUniqueID':
       return { ...player, id: Shortid.generate() };
 
+    case 'setPlayerID':
+      return { ...player, id: action.id };
+
     case 'registerToRoom': {
       return { ...player, name: action.name, isRegistered: true };
     }
