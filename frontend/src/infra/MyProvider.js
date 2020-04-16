@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { MyContext } from './MyContext';
 import {
   SERVER_ADDRESS,
