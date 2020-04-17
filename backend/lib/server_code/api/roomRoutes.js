@@ -7,7 +7,7 @@ let roomRouter = express.Router();
 
 // Mockups
 let roomCreated = false;
-let roomPlayersList = [];
+const roomPlayersList = [];
 const roomIDGenerator = () => {
   return '1';
 };
