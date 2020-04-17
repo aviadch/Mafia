@@ -1,9 +1,10 @@
-import socketIOClient from 'socket.io-client';
 import { SERVER_ADDRESS } from '../shared_code/consts';
-
+import socketIOClient from 'socket.io-client';
 let socket = null;
 
-export const createSocket = (socketPort) => socketIOClient(`${SERVER_ADDRESS}:${socketPort}`);
+export const createSocket = (socketPort) => {
+  return socketIOClient(`${SERVER_ADDRESS}:${socketPort}`);
+};
 
 export const verifySocketListen = (socket, evnetStr, callback) => {
   if (!socket._callbacks[evnetStr]) {
