@@ -51,7 +51,7 @@ roomRouter.get('/register', (req, res) => {
       message: 'A new player has registered to the room',
       roomPlayersList,
     });
-    res.send({ registerDate: res.date, roomPlayersList, roomSocketPort });
+    res.send({ roomPlayersList, roomSocketPort });
   } else {
     res.send({ error: true, errorMessage: `room ${roomID} does not exists` });
   }
