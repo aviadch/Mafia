@@ -1,13 +1,14 @@
 import React, { useReducer, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+
 import { MyContext } from './MyContext';
 import {
   SERVER_ADDRESS,
   SERVER_PORT,
   ROOM_ROUTES,
 } from '../shared_code/consts';
-import { verifySocketListen } from './socketUtils.js';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { verifySocketListen } from './socketUtils';
 
 import { playerReducer, playerInitialState } from './PlayerReducer';
 import { roomInitialState, roomReducer } from './RoomReducer';
@@ -15,7 +16,7 @@ import { roomInitialState, roomReducer } from './RoomReducer';
 const MyProvider = (props) => {
   const [player, playerDispatch] = useReducer(
     playerReducer,
-    playerInitialState
+    playerInitialState,
   );
 
   const [room, roomDispatch] = useReducer(roomReducer, roomInitialState);
@@ -35,7 +36,7 @@ const MyProvider = (props) => {
     }
   }, [room.socket]);
 
-  let history = useHistory();
+  const history = useHistory();
 
   const onRoomCreated = () => {
     history.push(`/${ROOM_ROUTES}`);
@@ -98,9 +99,9 @@ const MyProvider = (props) => {
         value={{
           player,
           room,
-          onRoomCreated: onRoomCreated,
-          onPlayerRegisterToRoom: onPlayerRegisterToRoom,
-          joinExistingRoom: joinExistingRoom,
+          onRoomCreated,
+          onPlayerRegisterToRoom,
+          joinExistingRoom,
         }}
       >
         {props.children}
