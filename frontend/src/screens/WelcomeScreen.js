@@ -6,7 +6,7 @@ import './WelcomeScreen.css';
 import MyContext from '../infra/MyContext';
 
 const WelcomeScreen = () => {
-  const { onRoomCreated } = useContext(MyContext);
+  const { onRoomCreated, joinExistingRoom } = useContext(MyContext);
   const [roomIDToJoin, setRoom] = useState('');
   const onRoomInputChange = (event) => {
     setRoom(event.target.value);
@@ -30,7 +30,7 @@ const WelcomeScreen = () => {
             label="RoomId"
           />
           <Button
-            onClick={() => context.joinExistingRoom(roomIDToJoin)}
+            onClick={() => joinExistingRoom(roomIDToJoin)}
             variant="contained"
             color="primary"
           >
