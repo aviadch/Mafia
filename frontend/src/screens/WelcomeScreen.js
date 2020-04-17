@@ -6,8 +6,7 @@ import './WelcomeScreen.css';
 import MyContext from '../infra/MyContext';
 
 const WelcomeScreen = () => {
-  const context = useContext(MyContext);
-  const { onRoomCreated } = context;
+  const { onRoomCreated } = useContext(MyContext);
   const [roomIDToJoin, setRoom] = useState('');
   const onRoomInputChange = (event) => {
     setRoom(event.target.value);
