@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { useReducer, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-import { MyContext } from './MyContext';
 import {
   SERVER_ADDRESS,
   SERVER_PORT,
@@ -12,6 +13,7 @@ import { verifySocketListen } from './socketUtils';
 
 import { playerReducer, playerInitialState } from './PlayerReducer';
 import { roomInitialState, roomReducer } from './RoomReducer';
+import MyContext from './MyContext';
 
 const MyProvider = (props) => {
   const [player, playerDispatch] = useReducer(
@@ -55,7 +57,7 @@ const MyProvider = (props) => {
         });
       })
       .catch((err) => {
-        window.alert(`Server giving us something wrong! ${err}`);
+        throw new Error(`Server giving us something wrong! ${err}`);
       });
   };
 
@@ -79,7 +81,7 @@ const MyProvider = (props) => {
       .then((res) => {
         const { error, errorMessage } = res.data;
         if (error) {
-          console.log(errorMessage);
+          throw new Error(errorMessage);
         } else {
           roomDispatch({
             type: 'initRoom',
