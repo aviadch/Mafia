@@ -7,6 +7,8 @@ import {
   SERVER_ADDRESS,
   SERVER_PORT,
   ROOM_ROUTES,
+  PLAYER_ACTIONS,
+  ROOM_ACTIONS,
 } from '../shared_code/consts';
 import { verifySocketListen } from './socketUtils';
 
@@ -22,12 +24,7 @@ const MyProvider = (props) => {
   const [room, roomDispatch] = useReducer(roomReducer, roomInitialState);
 
   const updatePlayerList = (data) => {
-    roomDispatch({
-      type: 'updatePlayerList',
-      data: {
-        playersList: data.roomPlayersList,
-      },
-    });
+    roomDispatch(ROOM_ACTIONS.updatePlayerList(data.roomPlayersList));
   };
 
   useEffect(() => {
@@ -40,19 +37,19 @@ const MyProvider = (props) => {
 
   const onRoomCreated = () => {
     history.push(`/${ROOM_ROUTES}`);
-    playerDispatch({ type: 'generateUniqueID' });
+    playerDispatch(PLAYER_ACTIONS.generateUniqueID);
     const req = { creatorID: player.id };
     axios
       .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
       .then((res) => {
-        roomDispatch({
-          type: 'initRoom',
-          data: {
-            id: res.data.roomID,
-            creationDate: res.data.creationDate,
-            socketPort: res.data.roomSocketPort,
-          },
-        });
+        roomDispatch(
+          ROOM_ACTIONS.initRoom(
+            res.data.roomID,
+            res.data.creationDate,
+            res.data.roomSocketPort,
+            [],
+          ),
+        );
       })
       .catch((err) => {
         window.alert(`Server giving us something wrong! ${err}`);
@@ -60,8 +57,8 @@ const MyProvider = (props) => {
   };
 
   const joinExistingRoom = (roomId) => {
-    playerDispatch({ type: 'generateUniqueID' });
-    roomDispatch({ type: 'setRoomId', data: { id: roomId } });
+    playerDispatch(PLAYER_ACTIONS.generateUniqueID);
+    roomDispatch(ROOM_ACTIONS.setRoomID(roomId));
     history.push(`/${ROOM_ROUTES}`);
   };
 
@@ -81,14 +78,14 @@ const MyProvider = (props) => {
         if (error) {
           console.log(errorMessage);
         } else {
-          roomDispatch({
-            type: 'initRoom',
-            data: {
-              creationDate: res.data.creationDate,
-              playersList: res.data.roomPlayersList,
-              socketPort: res.data.roomSocketPort,
-            },
-          });
+          roomDispatch(
+            ROOM_ACTIONS.initRoom(
+              room.id,
+              res.data.creationDate,
+              res.data.roomSocketPort,
+              res.data.roomPlayersList,
+            ),
+          );
         }
       });
   };
