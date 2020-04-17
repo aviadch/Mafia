@@ -29,6 +29,8 @@ const InputName = (props) => {
   );
 };
 
-InputName.propTypes;
-
+InputName.propTypes = {
+  label: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
 export default InputName;
