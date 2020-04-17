@@ -1,11 +1,13 @@
 import React, { useState, useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import './WelcomeScreen.css';
-import { MyContext } from '../infra/MyContext';
 import TextField from '@material-ui/core/TextField';
+import './WelcomeScreen.css';
+import MyContext from '../infra/MyContext';
+
 const WelcomeScreen = () => {
   const context = useContext(MyContext);
+  const { onRoomCreated } = context;
   const [roomIDToJoin, setRoom] = useState('');
   const onRoomInputChange = (event) => {
     setRoom(event.target.value);
@@ -18,11 +20,7 @@ const WelcomeScreen = () => {
 
       <div className="buttonContainer">
         <div>
-          <Button
-            onClick={context.onRoomCreated}
-            variant="contained"
-            color="primary"
-          >
+          <Button onClick={onRoomCreated} variant="contained" color="primary">
             Create a New Room
           </Button>
         </div>
