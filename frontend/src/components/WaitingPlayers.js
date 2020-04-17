@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PlayerCard from './PlayerCard';
-import { MyContext } from '../infra/MyContext';
+import MyContext from '../infra/MyContext';
 
 const WaitingPlayers = () => {
   const context = useContext(MyContext);
