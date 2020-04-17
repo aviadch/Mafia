@@ -1,22 +1,23 @@
 import React, { useContext } from 'react';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import InputName from '../components/InputName';
 import WaitingPlayers from '../components/WaitingPlayers';
-import Button from '@material-ui/core/Button';
-import { MyContext } from '../infra/MyContext.js';
+import MyContext from '../infra/MyContext';
+
 const WaitingRoom = () => {
   const context = useContext(MyContext);
-
+  const { room, player, onPlayerRegisterToRoom } = context;
   return (
     <div className="waiting-room">
       <Typography variant="h1" component="h2" gutterBottom>
-        Waiting Room - RoomId: {context.room.id}
+        {`Waiting Room - RoomId: ${room.id}`}
       </Typography>
       <>
-        {!context.player.isRegistered && (
+        {!player.isRegistered && (
           <InputName
             label="Enter Your Name"
-            onSubmit={context.onPlayerRegisterToRoom}
+            onSubmit={onPlayerRegisterToRoom}
           />
         )}
       </>
