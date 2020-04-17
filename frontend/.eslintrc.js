@@ -18,6 +18,8 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'linebreak-style': 0,
+    'no-underscore-dangle': ['error', { allow: ['_callbacks'] }],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'implicit-arrow-linebreak': 0,
   },
 };
