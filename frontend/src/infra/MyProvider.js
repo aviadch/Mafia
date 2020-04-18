@@ -6,12 +6,12 @@ import { useHistory } from 'react-router-dom';
 import Shortid from 'shortid';
 import { playerReducer, playerInitialState } from './PlayerReducer';
 import { roomInitialState, roomReducer } from './RoomReducer';
-import { createRoomFromAPI, registerToRoom } from '../APIUtils';
+import { createRoom, registerToRoom } from '../APIUtils';
 
 const MyProvider = (props) => {
   const [player, playerDispatch] = useReducer(
     playerReducer,
-    playerInitialState
+    playerInitialState,
   );
 
   const [room, roomDispatch] = useReducer(roomReducer, roomInitialState);
@@ -42,7 +42,7 @@ const MyProvider = (props) => {
   const onRoomCreated = async () => {
     history.push(`/${ROOM_ROUTES}`);
     const roomCreatorID = generatePlayerId();
-    createRoomFromAPI(roomDispatch, roomCreatorID);
+    createRoom(roomDispatch, roomCreatorID);
   };
 
   const joinExistingRoom = (roomId) => {

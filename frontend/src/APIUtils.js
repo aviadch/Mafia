@@ -1,12 +1,12 @@
 import { SERVER_ADDRESS, SERVER_PORT, ROOM_ROUTES } from './shared_code/consts';
 import axios from 'axios';
 
-export const createRoomFromAPI = async (roomDispatch, creatorID) => {
+export const createRoom = async (roomDispatch, creatorID) => {
   const req = { creatorID };
   try {
     const res = await axios.post(
       `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`,
-      req
+      req,
     );
     roomDispatch({
       type: 'initRoom',
@@ -25,7 +25,7 @@ export const registerToRoom = async (
   playerID,
   playerName,
   roomID,
-  roomDispatch
+  roomDispatch,
 ) => {
   try {
     const res = await axios.get(
@@ -36,7 +36,7 @@ export const registerToRoom = async (
           playerName,
           roomID,
         },
-      }
+      },
     );
     const { error, errorMessage } = res.data;
     if (error) {
