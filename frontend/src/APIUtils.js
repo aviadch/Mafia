@@ -1,10 +1,10 @@
+import axios from 'axios';
 import {
   SERVER_ADDRESS,
   SERVER_PORT,
   ROOM_ROUTES,
   ROOM_ACTIONS,
 } from './shared_code/consts';
-import axios from 'axios';
 
 export const createRoom = async (roomDispatch, creatorID) => {
   const req = { creatorID };
@@ -22,7 +22,7 @@ export const createRoom = async (roomDispatch, creatorID) => {
       ),
     );
   } catch (err) {
-    window.alert(`Server giving us something wrong! ${err}`);
+    throw new Error(`Server giving us something wrong! ${err}`);
   }
 };
 
@@ -45,7 +45,7 @@ export const registerToRoom = async (
     );
     const { error, errorMessage } = res.data;
     if (error) {
-      console.log(errorMessage);
+      throw new Error(errorMessage);
     } else {
       roomDispatch(
         ROOM_ACTIONS.initRoom(
@@ -57,6 +57,6 @@ export const registerToRoom = async (
       );
     }
   } catch (err) {
-    console.log(`An error occured:${err}`);
+    throw new Error(`An error occured:${err}`);
   }
 };
