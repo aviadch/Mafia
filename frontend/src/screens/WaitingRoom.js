@@ -6,8 +6,7 @@ import WaitingPlayers from '../components/WaitingPlayers';
 import MyContext from '../infra/MyContext';
 
 const WaitingRoom = () => {
-  const context = useContext(MyContext);
-  const { room, player, onPlayerRegisterToRoom } = context;
+  const { room, player, onPlayerRegisterToRoom } = useContext(MyContext);
   return (
     <div className="waiting-room">
       <Typography variant="h1" component="h2" gutterBottom>
