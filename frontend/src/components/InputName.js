@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 const InputName = (props) => {
+  const { label } = props;
   const [name, setName] = useState('');
 
   const handleOnChange = (event) => {
@@ -11,17 +12,11 @@ const InputName = (props) => {
   };
   return (
     <div className="inputWrapper">
-      <TextField
-        onChange={handleOnChange}
-        id="standard-basic"
-        label={props.label}
-      />
+      <TextField onChange={handleOnChange} id="standard-basic" label={label} />
       <Button
         variant="contained"
         color="primary"
-        onClick={() => {
-          return props.onSubmit(name);
-        }}
+        onClick={() => props.onSubmit(name)}
       >
         Submit
       </Button>
