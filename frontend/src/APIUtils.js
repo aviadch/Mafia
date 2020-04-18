@@ -1,4 +1,9 @@
-import { SERVER_ADDRESS, SERVER_PORT, ROOM_ROUTES } from './shared_code/consts';
+import {
+  SERVER_ADDRESS,
+  SERVER_PORT,
+  ROOM_ROUTES,
+  ROOM_ACTIONS,
+} from './shared_code/consts';
 import axios from 'axios';
 
 export const createRoom = async (roomDispatch, creatorID) => {
@@ -8,14 +13,14 @@ export const createRoom = async (roomDispatch, creatorID) => {
       `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`,
       req,
     );
-    roomDispatch({
-      type: 'initRoom',
-      data: {
-        id: res.data.roomID,
-        creationDate: res.data.creationDate,
-        socketPort: res.data.roomSocketPort,
-      },
-    });
+    roomDispatch(
+      ROOM_ACTIONS.initRoom(
+        res.data.roomID,
+        res.data.creationDate,
+        res.data.roomSocketPort,
+        [],
+      ),
+    );
   } catch (err) {
     window.alert(`Server giving us something wrong! ${err}`);
   }
@@ -42,14 +47,14 @@ export const registerToRoom = async (
     if (error) {
       console.log(errorMessage);
     } else {
-      roomDispatch({
-        type: 'initRoom',
-        data: {
-          creationDate: res.data.creationDate,
-          playersList: res.data.roomPlayersList,
-          socketPort: res.data.roomSocketPort,
-        },
-      });
+      roomDispatch(
+        ROOM_ACTIONS.initRoom(
+          roomID,
+          res.data.creationDate,
+          res.data.roomSocketPort,
+          res.data.roomPlayersList,
+        ),
+      );
     }
   } catch (err) {
     console.log(`An error occured:${err}`);
