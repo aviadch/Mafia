@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
 import PlayerCard from './PlayerCard';
-import { MyContext } from '../infra/MyContext';
+import MyContext from '../infra/MyContext';
 
 const WaitingPlayers = () => {
-  const context = useContext(MyContext);
-  const { room } = context;
+  const { room } = useContext(MyContext);
   return (
     <span className="waiting-players">
       <h1>Waiting Players</h1>
