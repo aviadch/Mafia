@@ -1,8 +1,6 @@
-import time
 from flask import Flask
+from lib.routes import api
 
 app = Flask(__name__)
 
-@app.route('/time')
-def get_current_time():
-    return {'time': time.time()}
+app.register_blueprint(api)

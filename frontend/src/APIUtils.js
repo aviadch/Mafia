@@ -3,23 +3,21 @@ import {
   SERVER_PORT,
   ROOM_ROUTES,
   ROOM_ACTIONS,
-} from './shared_code/consts';
-import axios from 'axios';
+  API_ROUTES,
+} from "./shared_code/consts";
+import axios from "axios";
 
 export const createRoom = async (roomDispatch, creatorID) => {
   const req = { creatorID };
   try {
-    const res = await axios.post(
-      `${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`,
-      req,
-    );
+    const res = await axios.post(`/${API_ROUTES}/${ROOM_ROUTES}/create`, req);
     roomDispatch(
       ROOM_ACTIONS.initRoom(
         res.data.roomID,
         res.data.creationDate,
         res.data.roomSocketPort,
-        [],
-      ),
+        []
+      )
     );
   } catch (err) {
     window.alert(`Server giving us something wrong! ${err}`);
@@ -30,7 +28,7 @@ export const registerToRoom = async (
   playerID,
   playerName,
   roomID,
-  roomDispatch,
+  roomDispatch
 ) => {
   try {
     const res = await axios.get(
@@ -41,7 +39,7 @@ export const registerToRoom = async (
           playerName,
           roomID,
         },
-      },
+      }
     );
     const { error, errorMessage } = res.data;
     if (error) {
@@ -52,8 +50,8 @@ export const registerToRoom = async (
           roomID,
           res.data.creationDate,
           res.data.roomSocketPort,
-          res.data.roomPlayersList,
-        ),
+          res.data.roomPlayersList
+        )
       );
     }
   } catch (err) {

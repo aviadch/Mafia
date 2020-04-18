@@ -1,15 +1,16 @@
-export const SERVER_ADDRESS = 'http://localhost';
-export const SERVER_PORT = '8080';
-export const ROOM_ROUTES = 'room';
+export const SERVER_ADDRESS = "http://localhost";
+export const SERVER_PORT = "3000";
+export const API_ROUTES = "api";
+export const ROOM_ROUTES = "room";
 
 export const PLAYER_ACTIONS = {
-  generateUniqueID: { type: 'generateUniqueID' },
+  generateUniqueID: { type: "generateUniqueID" },
 };
 
 export const ROOM_ACTIONS = {
   initRoom: (id, creationDate, socketPort, playersList) => {
     return {
-      type: 'initRoom',
+      type: "initRoom",
       data: {
         id,
         creationDate,
@@ -18,17 +19,17 @@ export const ROOM_ACTIONS = {
       },
     };
   },
-  updatePlayerList: (playersList) => {
+  updatePlayerList: playersList => {
     return {
-      type: 'updatePlayerList',
+      type: "updatePlayerList",
       data: {
         playersList,
       },
     };
   },
-  setRoomID: (id) => {
+  setRoomID: id => {
     return {
-      type: 'setRoomId',
+      type: "setRoomId",
       data: { id },
     };
   },
