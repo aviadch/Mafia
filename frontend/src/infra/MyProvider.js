@@ -4,7 +4,7 @@
 import React, { useReducer, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Shortid from 'shortid';
-import { MyContext } from './MyContext';
+import MyContext from './MyContext';
 import { verifySocketListen } from '../socketUtils';
 import { playerReducer, playerInitialState } from './PlayerReducer';
 import { roomInitialState, roomReducer } from './RoomReducer';
