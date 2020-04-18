@@ -1,4 +1,4 @@
-import { createSocket } from './socketUtils';
+import { createSocket } from '../socketUtils';
 
 export const roomInitialState = {
   id: '',

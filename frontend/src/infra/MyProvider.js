@@ -1,19 +1,16 @@
 import React, { useReducer, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-
 import { MyContext } from './MyContext';
-import {
-  SERVER_ADDRESS,
-  SERVER_PORT,
-  ROOM_ROUTES,
-  PLAYER_ACTIONS,
-  ROOM_ACTIONS,
-} from '../shared_code/consts';
-import { verifySocketListen } from './socketUtils';
-
+import { verifySocketListen } from '../socketUtils';
 import { playerReducer, playerInitialState } from './PlayerReducer';
 import { roomInitialState, roomReducer } from './RoomReducer';
+import { createRoom, registerToRoom } from '../APIUtils';
+import Shortid from 'shortid';
+import {
+  ROOM_ROUTES,
+  ROOM_ACTIONS,
+  PLAYER_ACTIONS,
+} from '../shared_code/consts';
 
 const MyProvider = (props) => {
   const [player, playerDispatch] = useReducer(
@@ -26,68 +23,31 @@ const MyProvider = (props) => {
   const updatePlayerList = (data) => {
     roomDispatch(ROOM_ACTIONS.updatePlayerList(data.roomPlayersList));
   };
-
+  const generatePlayerId = () => {
+    const id = Shortid.generate();
+    playerDispatch({ type: 'setPlayerID', id });
+    return id;
+  };
   useEffect(() => {
     if (room.socket) {
       verifySocketListen(room.socket, 'PlayerRegisteredRoom', updatePlayerList);
     }
   }, [room.socket]);
-
   const history = useHistory();
-
-  const onRoomCreated = () => {
+  const onRoomCreated = async () => {
     history.push(`/${ROOM_ROUTES}`);
-    playerDispatch(PLAYER_ACTIONS.generateUniqueID);
-    const req = { creatorID: player.id };
-    axios
-      .post(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/create`, req)
-      .then((res) => {
-        roomDispatch(
-          ROOM_ACTIONS.initRoom(
-            res.data.roomID,
-            res.data.creationDate,
-            res.data.roomSocketPort,
-            [],
-          ),
-        );
-      })
-      .catch((err) => {
-        window.alert(`Server giving us something wrong! ${err}`);
-      });
+    const roomCreatorID = generatePlayerId();
+    createRoom(roomDispatch, roomCreatorID);
   };
-
   const joinExistingRoom = (roomId) => {
     playerDispatch(PLAYER_ACTIONS.generateUniqueID);
     roomDispatch(ROOM_ACTIONS.setRoomID(roomId));
     history.push(`/${ROOM_ROUTES}`);
   };
 
-  const onPlayerRegisterToRoom = (name) => {
+  const onPlayerRegisterToRoom = async (name) => {
     playerDispatch({ type: 'registerToRoom', name });
-
-    axios
-      .get(`${SERVER_ADDRESS}:${SERVER_PORT}/${ROOM_ROUTES}/register`, {
-        params: {
-          playerID: player.id,
-          playerName: name,
-          roomID: room.id,
-        },
-      })
-      .then((res) => {
-        const { error, errorMessage } = res.data;
-        if (error) {
-          console.log(errorMessage);
-        } else {
-          roomDispatch(
-            ROOM_ACTIONS.initRoom(
-              room.id,
-              res.data.creationDate,
-              res.data.roomSocketPort,
-              res.data.roomPlayersList,
-            ),
-          );
-        }
-      });
+    registerToRoom(player.id, name, room.id, roomDispatch);
   };
 
   return (
