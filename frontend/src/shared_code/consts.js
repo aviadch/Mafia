@@ -7,29 +7,23 @@ export const PLAYER_ACTIONS = {
 };
 
 export const ROOM_ACTIONS = {
-  initRoom: (id, creationDate, socketPort, playersList) => {
-    return {
-      type: 'initRoom',
-      data: {
-        id,
-        creationDate,
-        socketPort,
-        playersList,
-      },
-    };
-  },
-  updatePlayerList: (playersList) => {
-    return {
-      type: 'updatePlayerList',
-      data: {
-        playersList,
-      },
-    };
-  },
-  setRoomID: (id) => {
-    return {
-      type: 'setRoomId',
-      data: { id },
-    };
-  },
+  initRoom: (id, creationDate, socketPort, playersList) => ({
+    type: 'initRoom',
+    data: {
+      id,
+      creationDate,
+      socketPort,
+      playersList,
+    },
+  }),
+  updatePlayerList: (playersList) => ({
+    type: 'updatePlayerList',
+    data: {
+      playersList,
+    },
+  }),
+  setRoomID: (id) => ({
+    type: 'setRoomId',
+    data: { id },
+  }),
 };

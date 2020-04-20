@@ -1,11 +1,15 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+
 import React, { useReducer, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { MyContext } from './MyContext';
+import Shortid from 'shortid';
+import MyContext from './MyContext';
 import { verifySocketListen } from '../socketUtils';
 import { playerReducer, playerInitialState } from './PlayerReducer';
 import { roomInitialState, roomReducer } from './RoomReducer';
 import { createRoom, registerToRoom } from '../APIUtils';
-import Shortid from 'shortid';
+
 import {
   ROOM_ROUTES,
   ROOM_ACTIONS,

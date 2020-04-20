@@ -1,18 +1,16 @@
-import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import MyProvider from "./infra/MyProvider.js";
+import MyProvider from './infra/MyProvider';
 
-import MafiaRoutes from "./MafiaRoutes";
+import MafiaRoutes from './MafiaRoutes';
 
-const App = () => {
-  return (
-    <BrowserRouter>
-      <MyProvider>
-        <MafiaRoutes />
-      </MyProvider>
-    </BrowserRouter>
-  );
-};
+const App = () => (
+  <BrowserRouter>
+    <MyProvider>
+      <MafiaRoutes />
+    </MyProvider>
+  </BrowserRouter>
+);
 
 export default App;
